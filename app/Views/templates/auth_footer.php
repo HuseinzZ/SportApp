@@ -1,10 +1,12 @@
-</div>
-<script src="<?= base_url('assets/vendor/jquery/dist/jquery.min.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/libs/jquery/jquery.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/libs/popper/popper.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/js/bootstrap.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') ?>"></script>
 
-<script src="<?= base_url('assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/js/menu.js') ?>"></script>
+<script src="<?= base_url('assets/js/main.js') ?>"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
-
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

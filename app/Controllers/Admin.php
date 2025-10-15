@@ -5,13 +5,12 @@ namespace App\Controllers;
 use App\Models\AdminModel;
 use CodeIgniter\Controller;
 
-class Admin extends BaseController // Pastikan BaseController ada
+class Admin extends BaseController
 {
     protected $adminModel;
 
     public function __construct()
     {
-        // Load Model
         $this->adminModel = model(AdminModel::class);
     }
 
@@ -25,10 +24,8 @@ class Admin extends BaseController // Pastikan BaseController ada
             'validation' => $validation,
         ];
 
-        // Jika sudah login, redirect ke dashboard
         if ($session->get('logged_in')) {
-            // PERBAIKAN: Redirect ke dashboard agar konsisten
-            return redirect()->to(site_url('admin'));
+            return redirect()->to(site_url('dashboard'));
         }
 
         $rules = [
@@ -36,15 +33,12 @@ class Admin extends BaseController // Pastikan BaseController ada
             'password' => 'required|trim',
         ];
 
-        // Gunakan $this->request dari BaseController
         if ($this->request->is('post')) {
             if ($this->validate($rules)) {
                 return $this->_login();
             }
-            // Jika validasi gagal, CI4 akan otomatis membawa error ke view melalui service('validation')
         }
 
-        // PERBAIKAN Logika View: Gunakan echo view()
         echo view('templates/auth_header', $data);
         echo view('auth/index', $data);
         echo view('templates/auth_footer');
@@ -60,15 +54,13 @@ class Admin extends BaseController // Pastikan BaseController ada
         $admin = $this->adminModel->where('username', $username)->first();
 
         if ($admin) {
-            // PERBAIKAN KRITIS: Hapus pengecekan password plaintext.
-            // HANYA boleh menggunakan password_verify()
-            if (password_verify($password, $admin['password']) || $password === $admin['password']) {
+            if (password_verify($password, $admin['password'])) {
                 $session->set([
                     'id_admin'  => $admin['id'],
                     'username'  => $admin['username'],
                     'logged_in' => true,
                 ]);
-                return redirect()->to(site_url('admin'));
+                return redirect()->to(site_url('dashboard'));
             }
 
             $session->setFlashdata('error', 'Password salah!');
