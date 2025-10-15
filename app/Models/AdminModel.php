@@ -8,13 +8,18 @@ class AdminModel extends Model
 {
     protected $table = 'admin';
     protected $primaryKey = 'id';
-    // PERBAIKAN: Mengubah 'update_at' menjadi 'updated_at'
-    protected $allowedFields = ['username', 'password', 'created_at', 'updated_at'];
-
-    // Menambahkan konfigurasi timestamp agar otomatis diurus oleh CI4
+    protected $allowedFields = ['username', 'password'];
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    // Jika Anda menggunakan soft delete:
-    // protected $useSoftDeletes = false; 
+    protected $updatedField  = 'update_at';
+
+    /**
+     * Mencari admin berdasarkan username.
+     * @param string $username
+     * @return array|object|null
+     */
+    public function findByUsername(string $username)
+    {
+        return $this->where('username', $username)->first();
+    }
 }

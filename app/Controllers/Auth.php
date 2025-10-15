@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\AdminModel;
 use CodeIgniter\Controller;
 
-class Admin extends BaseController
+class Auth extends BaseController
 {
     protected $adminModel;
 
@@ -16,7 +16,6 @@ class Admin extends BaseController
 
     public function index()
     {
-        $session = service('session');
         $validation = service('validation');
 
         $data = [
@@ -24,13 +23,19 @@ class Admin extends BaseController
             'validation' => $validation,
         ];
 
-        if ($session->get('logged_in')) {
+        if (session()->get('logged_in')) {
             return redirect()->to(site_url('dashboard'));
         }
 
         $rules = [
             'username' => 'required|trim',
-            'password' => 'required|trim',
+            'password' => [
+                'rules' => 'required|trim|min_length[6]',
+                'errors' => [
+                    'required' => 'Password wajib diisi.',
+                    'min_length' => 'Password minimal 6 karakter.'
+                ]
+            ],
         ];
 
         if ($this->request->is('post')) {
@@ -46,7 +51,6 @@ class Admin extends BaseController
 
     private function _login()
     {
-        $session = service('session');
 
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
@@ -55,7 +59,7 @@ class Admin extends BaseController
 
         if ($admin) {
             if (password_verify($password, $admin['password'])) {
-                $session->set([
+                session()->set([
                     'id_admin'  => $admin['id'],
                     'username'  => $admin['username'],
                     'logged_in' => true,
@@ -63,19 +67,18 @@ class Admin extends BaseController
                 return redirect()->to(site_url('dashboard'));
             }
 
-            $session->setFlashdata('error', 'Password salah!');
+            session()->setFlashdata('error', 'Password salah!');
             return redirect()->to(site_url('admin'))->withInput();
         }
 
-        $session->setFlashdata('error', 'Username tidak ditemukan!');
+        session()->setFlashdata('error', 'Username tidak ditemukan!');
         return redirect()->to(site_url('admin'))->withInput();
     }
 
     public function logout()
     {
-        $session = service('session');
-        $session->destroy();
-        $session->setFlashdata('success', 'Anda berhasil logout.');
+        session()->destroy();
+        session()->setFlashdata('success', 'Anda berhasil logout.');
         return redirect()->to(site_url('admin'));
     }
 
