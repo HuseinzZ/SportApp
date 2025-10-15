@@ -24,7 +24,7 @@ class Auth extends BaseController
         ];
 
         if (session()->get('logged_in')) {
-            return redirect()->to(site_url('dashboard'));
+            return redirect()->to(site_url('admin/dashboard'));
         }
 
         $rules = [
@@ -64,7 +64,7 @@ class Auth extends BaseController
                     'username'  => $admin['username'],
                     'logged_in' => true,
                 ]);
-                return redirect()->to(site_url('dashboard'));
+                return redirect()->to(site_url('admin/dashboard'));
             }
 
             session()->setFlashdata('error', 'Password salah!');

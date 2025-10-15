@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="app-brand justify-content-center">
-                    <a href="<?= site_url('dashboard') ?>" class="app-brand-link gap-2">
+                    <a href="<?= site_url('admin/dashboard') ?>" class="app-brand-link gap-2">
                         <span class="app-brand-logo demo">
                             <svg
                                 width="25"
