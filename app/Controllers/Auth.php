@@ -55,7 +55,7 @@ class Auth extends BaseController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
-        $admin = $this->adminModel->where('username', $username)->first();
+        $admin = $this->adminModel->findByUsername($username);
 
         if ($admin) {
             if (password_verify($password, $admin['password'])) {
