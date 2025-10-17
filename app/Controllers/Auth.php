@@ -86,4 +86,66 @@ class Auth extends BaseController
     {
         return view('auth/blocked', ['title' => 'Access Blocked']);
     }
+
+    public function changePassword()
+    {
+        $validation = service('validation');
+        $adminId = session()->get('id_admin');
+
+        $data = [
+            'title'      => 'Ganti Sandi Akun',
+            'validation' => $validation,
+        ];
+
+        $rules = [
+            'current_password' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'Sandi lama wajib diisi.']
+            ],
+            'new_password' => [
+                'rules' => 'required|min_length[6]',
+                'errors' => [
+                    'required' => 'Sandi baru wajib diisi.',
+                    'min_length' => 'Sandi baru minimal 6 karakter.'
+                ]
+            ],
+            'confirm_password' => [
+                'rules' => 'required|matches[new_password]',
+                'errors' => [
+                    'required' => 'Konfirmasi sandi wajib diisi.',
+                    'matches' => 'Konfirmasi sandi tidak cocok.'
+                ]
+            ],
+        ];
+
+        if ($this->request->is('post')) {
+            if ($this->validate($rules)) {
+
+                $currentPassword = $this->request->getPost('current_password');
+                $newPassword = $this->request->getPost('new_password');
+
+                $admin = $this->adminModel->findById($adminId);
+
+                if (!password_verify($currentPassword, $admin['password'])) {
+                    session()->setFlashdata('error', 'Sandi lama salah!');
+                    return redirect()->back()->withInput();
+                }
+
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                if (password_verify($newPassword, $admin['password'])) {
+                    session()->setFlashdata('error', 'Sandi baru tidak boleh sama dengan sandi lama!');
+                    return redirect()->back()->withInput();
+                }
+
+                $this->adminModel->update($adminId, ['password' => $hashedPassword]);
+
+                session()->setFlashdata('success', 'Sandi berhasil diubah! Silakan login ulang.');
+                session()->destroy();
+                return redirect()->to(site_url('admin'));
+            }
+        }
+
+        echo view('auth/change_password', $data);
+    }
 }

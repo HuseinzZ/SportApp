@@ -22,4 +22,9 @@ class AdminModel extends Model
     {
         return $this->where('username', $username)->first();
     }
+
+    public function findById(int $adminId)
+    {
+        return $this->find($adminId);
+    }
 }

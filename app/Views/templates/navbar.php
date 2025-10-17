@@ -14,12 +14,12 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="<?= base_url('assets/img/avatars/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
+                            <img src="<?= base_url('assets/img/1.png') ?>" alt class="w-px-40 h-auto rounded-circle" />
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="<?= base_url('admin/reset-password') ?>">
+                            <a class="dropdown-item" href="<?= base_url('admin/change-password') ?>">
                                 <i class="bx bx-cog me-2"></i>
                                 <span class="align-middle">Reset Password</span>
                             </a>
