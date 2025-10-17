@@ -5,7 +5,7 @@
                 <img
                     src="<?= base_url('assets/img/1.png') ?>"
                     alt="Logo PB PRABU"
-                    style="height: 60px; width: auto;" />
+                    style="height: 50px; width: auto;" />
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2 fs-3 text-uppercase">PB PRABU</span>
         </a>
