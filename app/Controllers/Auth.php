@@ -124,7 +124,7 @@ class Auth extends BaseController
                 $currentPassword = $this->request->getPost('current_password');
                 $newPassword = $this->request->getPost('new_password');
 
-                $admin = $this->adminModel->findById($adminId);
+                $admin = $this->adminModel->find($adminId);
 
                 if (!password_verify($currentPassword, $admin['password'])) {
                     session()->setFlashdata('error', 'Sandi lama salah!');

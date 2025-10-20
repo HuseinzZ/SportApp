@@ -6,7 +6,7 @@
                 document.write(new Date().getFullYear());
             </script>
             , made by
-            <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">PB PRABU</a>
+            <a href="<?= base_url('/') ?>" target="_blank" class="footer-link fw-bolder">PB PRABU</a>
         </div>
     </div>
 </footer>

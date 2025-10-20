@@ -6,25 +6,21 @@ use CodeIgniter\Model;
 
 class AdminModel extends Model
 {
-    protected $table = 'admin';
-    protected $primaryKey = 'id';
+    protected $table         = 'admin';
+    protected $primaryKey    = 'id';
     protected $allowedFields = ['username', 'password'];
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'update_at';
+    protected $updatedField  = 'updated_at';
 
     /**
-     * Mencari admin berdasarkan username.
+     * Cari data admin berdasarkan username.
+     *
      * @param string $username
-     * @return array|object|null
+     * @return array|null
      */
-    public function findByUsername(string $username)
+    public function findByUsername(string $username): ?array
     {
         return $this->where('username', $username)->first();
-    }
-
-    public function findById(int $adminId)
-    {
-        return $this->find($adminId);
     }
 }

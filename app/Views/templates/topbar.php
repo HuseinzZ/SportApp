@@ -11,6 +11,7 @@
         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <li class="nav-item me-2 me-xl-0">
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
@@ -19,18 +20,24 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="<?= base_url('admin/change-password') ?>">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Reset Password</span>
+                            <a class="dropdown-item" href="<?= base_url('admin/logout') ?>">
+                                <i class="bx bx-power-off me-2"></i>
+                                <span class="align-middle">Log Out</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?= base_url('/') ?>">
+                                <i class="bx bx-show me-2"></i>
+                                <span class="align-middle">Public Site</span>
                             </a>
                         </li>
                         <li>
                             <div class="dropdown-divider"></div>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="<?= base_url('admin/logout') ?>">
-                                <i class="bx bx-power-off me-2"></i>
-                                <span class="align-middle">Log Out</span>
+                            <a class="dropdown-item" href="<?= base_url('admin/change-password') ?>">
+                                <i class="bx bx-cog me-2"></i>
+                                <span class="align-middle">Reset Password</span>
                             </a>
                         </li>
                     </ul>

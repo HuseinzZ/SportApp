@@ -14,7 +14,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Page Not Found - Sports Admin</title>
+    <title>Page Not Found - Admin PB PRABU</title>
 
     <meta name="description" content="" />
 
