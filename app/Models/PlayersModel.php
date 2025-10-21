@@ -11,6 +11,7 @@ class PlayersModel extends Model
 
     protected $allowedFields    = [
         'player_name',
+        'level',
         'gender',
         'photo',
         'is_active',

@@ -26,6 +26,18 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="level" class="form-label">Level Pemain</label>
+                    <select name="level" id="level"
+                        class="form-select <?= (session('validation') && session('validation')->hasError('level')) ? 'is-invalid' : '' ?>">
+                        <option value="">-- Pilih Level --</option>
+                        <option value="Pratama" <?= old('level') === 'Pratama' ? 'selected' : '' ?>>Pratama</option>
+                        <option value="Utama" <?= old('level') === 'Utama' ? 'selected' : '' ?>>Utama</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <?= session('validation') ? session('validation')->getError('level') : '' ?>
+                    </div>
+                </div>
+                <div class="mb-3">
                     <label for="gender" class="form-label">Jenis Kelamin</label>
                     <select name="gender" id="gender"
                         class="form-select <?= (session('validation') && session('validation')->hasError('gender')) ? 'is-invalid' : '' ?>">

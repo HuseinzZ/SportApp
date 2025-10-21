@@ -22,7 +22,7 @@ $session = service('session');
 
     <meta name="description" content="" />
 
-    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/favicon/favicon.ico') ?>" />
+    <link rel="icon" type="image/x-icon" href="<?= base_url('assets/img/1.ico') ?>" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -19,8 +19,8 @@
                         <span class="app-brand-text demo text-body fw-bolder">Admin Panel</span>
                     </a>
                 </div>
-                <h4 class="mb-2">Welcome Back! 👋</h4>
-                <p class="mb-4">Please log-in to your account and start the adventure</p>
+                <h4 class="mb-2">Selamat datang kembali! 👋</h4>
+                <p class="mb-4">Harap, masuk menggunakan akun anda dan mulai menjelajah</p>
 
                 <form id="formAuthentication" class="mb-3" action="<?= site_url('admin') ?>" method="POST">
                     <?= csrf_field() ?>

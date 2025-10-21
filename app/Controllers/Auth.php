@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\AdminModel;
-use CodeIgniter\Controller;
 
 class Auth extends BaseController
 {
@@ -11,12 +10,12 @@ class Auth extends BaseController
 
     public function __construct()
     {
-        $this->adminModel = model(AdminModel::class);
+        $this->adminModel = new AdminModel();
     }
 
     public function index()
     {
-        $validation = service('validation');
+        $validation = \Config\Services::validation();
 
         $data = [
             'title'      => 'Login Admin',
@@ -89,7 +88,7 @@ class Auth extends BaseController
 
     public function changePassword()
     {
-        $validation = service('validation');
+        $validation = \Config\Services::validation();
         $adminId = session()->get('id_admin');
 
         $data = [

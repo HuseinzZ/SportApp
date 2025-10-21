@@ -12,6 +12,7 @@
         <div class="card-body">
             <form action="<?= site_url('admin/players/update/' . $player['id']) ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
+                <input type="hidden" name="_method" value="PUT">
 
                 <div class="mb-3">
                     <label for="player_name" class="form-label">Nama Pemain</label>
@@ -27,6 +28,18 @@
                     </div>
                 </div>
 
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level Pemain</label>
+                    <select name="level" id="level"
+                        class="form-select <?= (session('validation') && session('validation')->hasError('level')) ? 'is-invalid' : '' ?>">
+                        <option value="">-- Pilih Level --</option>
+                        <option value="Pratama" <?= old('level', $player['level']) === 'Pratama' ? 'selected' : '' ?>>Pratama</option>
+                        <option value="Utama" <?= old('level', $player['level']) === 'Utama' ? 'selected' : '' ?>>Utama</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <?= session('validation') ? session('validation')->getError('level') : '' ?>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <label for="gender" class="form-label">Jenis Kelamin</label>
                     <select
@@ -72,7 +85,7 @@
                         <div class="flex-grow-1">
                             <input
                                 class="form-control <?= (session('validation') && session('validation')->hasError('photo')) ? 'is-invalid' : '' ?>"
-                                type="file" id="photo" name="photo" accept="image/*"
+                                type="file" id="photo_input" name="photo" accept="image/*"
                                 onchange="previewPhoto(event)" />
                             <div class="invalid-feedback d-block">
                                 <?= session('validation') ? session('validation')->getError('photo') : '' ?>

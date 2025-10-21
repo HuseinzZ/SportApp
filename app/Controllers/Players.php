@@ -56,10 +56,18 @@ class Players extends BaseController
             'player_name' => [
                 'rules'  => 'required|min_length[3]',
                 'errors' => [
-                    'required'    => 'Nama pemain harus diisi.',
-                    'min_length'  => 'Nama pemain minimal 3 karakter.',
+                    'required'   => 'Nama pemain harus diisi.',
+                    'min_length' => 'Nama pemain minimal 3 karakter.',
                 ],
             ],
+            'level' => [
+                'rules'  => 'required|in_list[Pratama,Utama]',
+                'errors' => [
+                    'required' => 'Level pemain harus diisi.',
+                    'in_list'  => 'Level pemain tidak valid.',
+                ],
+            ],
+
             'gender' => [
                 'rules'  => 'required|in_list[M,F]',
                 'errors' => [
@@ -92,6 +100,7 @@ class Players extends BaseController
         // Simpan ke database
         $this->playersModel->save([
             'player_name' => $this->request->getPost('player_name'),
+            'level'       => $this->request->getPost('level'),
             'gender'      => $this->request->getPost('gender'),
             'photo'       => $namaPhoto,
             'is_active'   => 1,
@@ -110,7 +119,7 @@ class Players extends BaseController
 
         if (!$pemain) {
             session()->setFlashdata('error', 'Data pemain tidak ditemukan.');
-            return redirect()->to(site_url('players'));
+            return redirect()->to(site_url('admin/players'));
         }
 
         $data = [
@@ -139,9 +148,35 @@ class Players extends BaseController
         }
 
         $validationRules = [
-            'player_name' => 'required|min_length[3]',
-            'gender'      => 'required|in_list[M,F]',
-            'photo'       => 'if_exist|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]',
+            'player_name' => [
+                'rules'  => 'required|min_length[3]',
+                'errors' => [
+                    'required'   => 'Nama pemain harus diisi.',
+                    'min_length' => 'Nama pemain minimal 3 karakter.',
+                ],
+            ],
+            'level' => [
+                'rules'  => 'required|in_list[Pratama,Utama]',
+                'errors' => [
+                    'required' => 'Level pemain harus diisi.',
+                    'in_list'  => 'Level pemain tidak valid.',
+                ],
+            ],
+
+            'gender' => [
+                'rules'  => 'required|in_list[M,F]',
+                'errors' => [
+                    'required' => 'Jenis kelamin harus diisi.',
+                    'in_list'  => 'Jenis kelamin tidak valid.',
+                ],
+            ],
+            'photo' => [
+                'rules'  => 'if_exist|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'is_image' => 'File harus berupa gambar.',
+                    'mime_in'  => 'Format gambar tidak didukung (hanya JPG, JPEG, PNG).',
+                ],
+            ],
         ];
 
         if (!$this->validate($validationRules)) {
@@ -169,6 +204,7 @@ class Players extends BaseController
         // Update ke database
         $this->playersModel->update($id, [
             'player_name' => $this->request->getPost('player_name'),
+            'level'       => $this->request->getPost('level'),
             'gender'      => $this->request->getPost('gender'),
             'photo'       => $namaPhoto,
             'is_active'   => $this->request->getPost('is_active'),
@@ -185,7 +221,7 @@ class Players extends BaseController
     {
         if (!$id) {
             session()->setFlashdata('error', 'ID pemain tidak ditemukan.');
-            return redirect()->to(site_url('players'));
+            return redirect()->to(site_url('admin/players'));
         }
 
         $pemain = $this->playersModel->find($id);

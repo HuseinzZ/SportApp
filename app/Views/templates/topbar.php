@@ -22,13 +22,13 @@
                         <li>
                             <a class="dropdown-item" href="<?= base_url('admin/logout') ?>">
                                 <i class="bx bx-power-off me-2"></i>
-                                <span class="align-middle">Log Out</span>
+                                <span class="align-middle">Keluar</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?= base_url('/') ?>">
                                 <i class="bx bx-show me-2"></i>
-                                <span class="align-middle">Public Site</span>
+                                <span class="align-middle">Situs Public</span>
                             </a>
                         </li>
                         <li>
@@ -37,7 +37,7 @@
                         <li>
                             <a class="dropdown-item" href="<?= base_url('admin/change-password') ?>">
                                 <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Reset Password</span>
+                                <span class="align-middle">Ubah Password</span>
                             </a>
                         </li>
                     </ul>

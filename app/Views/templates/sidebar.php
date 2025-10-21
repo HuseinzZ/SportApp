@@ -49,13 +49,6 @@ $uri = service('uri');
             </a>
         </li>
 
-        <li class="menu-item <?= $uri->getSegment(2) === 'fields' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/fields') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-map-pin"></i>
-                <div>Lapangan</div>
-            </a>
-        </li>
-
         <li class="menu-item <?= $uri->getSegment(2) === 'players' ? 'active' : '' ?>">
             <a href="<?= base_url('admin/players') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
