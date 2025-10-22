@@ -34,10 +34,7 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     $routes->get('players/a_players', 'Players::a_players');       // Tambah pemain (form)
     $routes->post('players/store', 'Players::store');              // Simpan pemain baru
     $routes->get('players/e_players/(:num)', 'Players::e_players/$1'); // Edit pemain
-
-    // DIPERBAIKI: Menggunakan match(['post', 'put']) untuk Update
     $routes->match(['post', 'put'], 'players/update/(:num)', 'Players::update/$1'); // Update pemain
-
     $routes->get('players/d_players/(:num)', 'Players::d_players/$1'); // Hapus pemain
 
     // ------------------------------------
@@ -47,10 +44,20 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     $routes->get('gors/a_gors', 'Gors::a_gors');                     // Tambah GOR (form)
     $routes->post('gors/store', 'Gors::store');                      // Simpan GOR baru
     $routes->get('gors/e_gors/(:num)', 'Gors::e_gors/$1');           // Edit GOR (form)
-
-    // DIPERBAIKI: Menggunakan match(['post', 'put']) untuk Update
     $routes->match(['post', 'put'], 'gors/update/(:num)', 'Gors::update/$1'); // Update GOR
-
-    // DIPERBAIKI: Mengganti 'd_gor' menjadi 'd_gors'
     $routes->get('gors/d_gors/(:num)', 'Gors::d_gors/$1');           // Hapus GOR
+
+    // ------------------------------------
+    // 📸 Gallery Management (BARU)
+    // ------------------------------------
+    $routes->get('gallery', 'Gallery::index');                         // List Galeri
+    $routes->get('gallery/a_gallery', 'Gallery::a_gallery');           // Tambah Galeri (form)
+    $routes->post('gallery/store', 'Gallery::store');                  // Simpan Galeri baru
+    $routes->get('gallery/e_gallery/(:num)', 'Gallery::e_gallery/$1'); // Edit Galeri (form)
+
+    // Update menggunakan Method Spoofing (POST/PUT)
+    $routes->match(['post', 'put'], 'gallery/update/(:num)', 'Gallery::update/$1');
+
+    // Delete menggunakan Method Spoofing (POST/DELETE)
+    $routes->match(['post', 'delete'], 'gallery/d_gallery/(:num)', 'Gallery::d_gallery/$1');
 });

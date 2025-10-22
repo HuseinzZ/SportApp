@@ -28,8 +28,8 @@ $uri = service('uri');
             <span class="menu-header-text">Master</span>
         </li>
 
-        <li class="menu-item <?= $uri->getSegment(2) === 'galery' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/galery') ?>" class="menu-link">
+        <li class="menu-item <?= $uri->getSegment(2) === 'gallery' ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/gallery') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-images"></i>
                 <div>Galeri</div>
             </a>

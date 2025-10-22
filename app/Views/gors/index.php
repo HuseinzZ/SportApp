@@ -18,7 +18,7 @@
         <?php endif; ?>
 
         <a href="<?= site_url('admin/gors/a_gors') ?>" class="btn btn-primary mb-3">
-            <i class="bx bx-plus me-1"></i> Tambah Fasilitas
+            <i class="bx bx-plus me-1"></i> Tambah GOR
         </a>
 
         <div class="card">
