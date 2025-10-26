@@ -242,4 +242,32 @@ class Players extends BaseController
 
         return redirect()->to(site_url('admin/players'));
     }
+
+    public function matchHistory($playerId = null)
+    {
+        // Asumsi MatchPlayerModel diinisialisasi
+        $matchPlayerModel = new \App\Models\MatchPlayerModel();
+
+        $player = $this->playersModel->find($playerId);
+
+        if (!$player) {
+            session()->setFlashdata('error', 'Pemain tidak ditemukan.');
+            return redirect()->to(site_url('admin/players'));
+        }
+
+        // Panggil fungsi model yang baru
+        $history = $matchPlayerModel->getRecentMatchHistory($playerId);
+
+        $data = [
+            'title'        => 'Histori Pertandingan: ' . $player['player_name'],
+            'player'       => $player,
+            'history'      => $history,
+        ];
+
+        echo view('templates/table_header', $data);
+        echo view('templates/sidebar');
+        echo view('templates/topbar');
+        echo view('players/match_history', $data); // View untuk tampilan histori
+        echo view('templates/table_footer');
+    }
 }

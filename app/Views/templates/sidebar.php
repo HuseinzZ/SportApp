@@ -2,7 +2,6 @@
 $uri = service('uri');
 $segment2 = $uri->getSegment(2);
 
-// Menyertakan 'matches' agar menu induk tetap terbuka saat user di halaman match/index/ID
 $tournament_segments = ['schedules', 'tournament-points', 'matches'];
 $isTournamentActive = in_array($segment2, $tournament_segments);
 ?>
@@ -72,5 +71,15 @@ $isTournamentActive = in_array($segment2, $tournament_segments);
                 </li>
             </ul>
         </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Laporan</span>
+        </li>
+        <li class="menu-item <?= $segment2 === 'ranking' ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/ranking') ?>" class="menu-link">
+                <div>Ranking Poin Global</div>
+            </a>
+        </li>
+
     </ul>
 </aside>

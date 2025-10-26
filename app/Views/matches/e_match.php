@@ -74,11 +74,11 @@
                     <?php endfor; ?>
                 </div>
 
-                <h5 class="mt-4 mb-3">Input Skor (Per Game)</h5>
+                <h5 class="mt-4 mb-3">Input Skor</h5>
                 <div class="row">
                     <?php
                     // Tampilkan input untuk 3 Game, mengisi data lama jika ada
-                    for ($game = 1; $game <= 3; $game++):
+                    for ($game = 1; $game <= 1; $game++):
 
                         // Cari data skor untuk game ini
                         $scoreData = array_values(array_filter($match_scores, fn($s) => $s['game_number'] == $game))[0] ?? null;
@@ -91,17 +91,17 @@
                         $isRequired = ($game === 1) ? 'required' : '';
                     ?>
                         <div class="col-md-12 border-top pt-3 mt-3">
-                            <h6 class="mb-3">Game <?= $game ?></h6>
+                            <h6 class="mb-3">Game</h6>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Skor Tim A (Game <?= $game ?>)</label>
+                            <label class="form-label">Skor Tim A</label>
                             <input type="number" name="score_A[]" class="form-control"
                                 value="<?= esc($scoreA_val) ?>" min="0" <?= $isRequired ?>>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Skor Tim B (Game <?= $game ?>)</label>
+                            <label class="form-label">Skor Tim B</label>
                             <input type="number" name="score_B[]" class="form-control"
                                 value="<?= esc($scoreB_val) ?>" min="0" <?= $isRequired ?>>
                         </div>

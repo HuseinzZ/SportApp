@@ -58,22 +58,24 @@
                     <?php endfor; ?>
                 </div>
 
-                <h5 class="mt-4 mb-3">Input Skor (Per Game)</h5>
-                <?php for ($game = 1; $game <= 3; $game++): ?>
+                <h5 class="mt-4 mb-3">Input Skor</h5>
+                <?php for ($game = 1; $game <= 1; $game++): ?>
                     <div class="row border-top pt-3 mt-3 game-input-group" data-game="<?= $game ?>">
-                        <h6 class="col-12 mb-3">Game <?= $game ?></h6>
+                        <h6 class="col-12 mb-3">Game</h6>
 
                         <?php $isRequired = ($game === 1) ? 'required' : ''; // Hanya Game 1 yang wajib 
                         ?>
 
+                        <!-- (Game <?= $game ?>) -->
+
                         <div class="col-md-6 mb-3">
-                            <label for="score_A_<?= $game ?>" class="form-label">Skor Tim A (Game <?= $game ?>)</label>
+                            <label for="score_A_<?= $game ?>" class="form-label">Skor Tim A </label>
                             <input type="number" name="score_A[]" id="score_A_<?= $game ?>" class="form-control"
                                 value="<?= old('score_A')[$game - 1] ?? '' ?>" min="0" <?= $isRequired ?>>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="score_B_<?= $game ?>" class="form-label">Skor Tim B (Game <?= $game ?>)</label>
+                            <label for="score_B_<?= $game ?>" class="form-label">Skor Tim B</label>
                             <input type="number" name="score_B[]" id="score_B_<?= $game ?>" class="form-control"
                                 value="<?= old('score_B')[$game - 1] ?? '' ?>" min="0" <?= $isRequired ?>>
                         </div>

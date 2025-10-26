@@ -31,4 +31,12 @@ class SchedulesModel extends Model
             ->join('tournament_points', 'tournament_points.id = schedules.tournament_points_id')
             ->findAll();
     }
+
+    public function getScheduleWithPoints($scheduleId)
+    {
+        return $this->select('schedules.*, tp.*')
+            ->join('tournament_points AS tp', 'tp.id = schedules.tournament_points_id')
+            ->where('schedules.id', $scheduleId)
+            ->first();
+    }
 }

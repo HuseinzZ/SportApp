@@ -7,6 +7,7 @@ use App\Models\MatchPlayerModel;
 use App\Models\MatchScoreModel;
 use App\Models\SchedulesModel;
 use App\Models\PlayersModel;
+use App\Models\PlayerRankPointModel;
 
 class Matches extends BaseController
 {
@@ -15,6 +16,7 @@ class Matches extends BaseController
     protected $matchScoreModel;
     protected $schedulesModel;
     protected $playersModel;
+    protected $playerRankPointModel;
 
     public function __construct()
     {
@@ -23,6 +25,7 @@ class Matches extends BaseController
         $this->matchScoreModel = new MatchScoreModel();
         $this->schedulesModel = new SchedulesModel();
         $this->playersModel = new PlayersModel();
+        $this->playerRankPointModel = new PlayerRankPointModel();
     }
 
     private function getMatchPlayersData($matchId)
@@ -33,6 +36,61 @@ class Matches extends BaseController
             $teams[$p['team']][] = $p['player_name'];
         }
         return $teams;
+    }
+
+    // ==================================================
+    // LOGIKA SINKRONISASI POIN OTOMATIS
+    // ==================================================
+    private function syncPlayerRankPoints($scheduleId, $matchId, $roundReached)
+    {
+        $scheduleData = $this->schedulesModel->getScheduleWithPoints($scheduleId);
+        $matchPlayers = $this->matchPlayerModel->where('match_id', $matchId)->findAll();
+        $match = $this->matchModel->find($matchId);
+        $winnerTeam = $match['winner_team'];
+
+        // Map Poin Master
+        $pointsMap = [
+            'R1'    => 'points_r1',
+            'R2'    => 'points_r2',
+            'QF'    => 'points_qf',
+            'SF'    => 'points_sf',
+            'Final' => 'points_runnerup',
+        ];
+
+        $dataRank = [];
+        foreach ($matchPlayers as $player) {
+
+            $isChampion = ($roundReached === 'Final' && $player['team'] === $winnerTeam);
+
+            // Tentukan Poin Akhir yang Diperoleh
+            if ($isChampion) {
+                $pointsEarned = $scheduleData['points_champion'] ?? 0;
+                $stageText = 'CHAMPION';
+            } else {
+                // Untuk Finalis (Runner-up) dan babak lainnya
+                $stageKey = $pointsMap[$roundReached] ?? 'points_r1';
+                $pointsEarned = $scheduleData[$stageKey] ?? 0;
+                $stageText = $roundReached;
+            }
+
+            // --- Hapus Entri Lama (Untuk Kunci Unik schedule_id dan player_id) ---
+            $this->playerRankPointModel
+                ->where('schedule_id', $scheduleId)
+                ->where('player_id', $player['player_id'])
+                ->delete();
+
+            // --- Simpan Poin Baru ---
+            $dataRank[] = [
+                'schedule_id'   => $scheduleId,
+                'player_id'     => $player['player_id'],
+                'stage_reached' => $stageText,
+                'points_earned' => $pointsEarned,
+            ];
+        }
+
+        if (!empty($dataRank)) {
+            $this->playerRankPointModel->insertBatch($dataRank);
+        }
     }
 
     // ==================================================
@@ -118,13 +176,15 @@ class Matches extends BaseController
             session()->setFlashdata('error', 'Setiap pemain harus unik (tidak ada duplikasi di dalam 4 pemain).');
             return redirect()->back()->withInput();
         }
-        if (count($scoreA) !== count($scoreB) || count($scoreA) === 0) {
-            session()->setFlashdata('error', 'Skor harus diisi minimal 1 Game, dan jumlah skor Tim A dan B harus sama.');
+
+        // Perbaikan: Hanya cek array score sudah terisi
+        if (empty($scoreA[0]) || empty($scoreB[0])) {
+            session()->setFlashdata('error', 'Harap isi Games Won Tim A dan Tim B.');
             return redirect()->back()->withInput();
         }
 
-        // Tentukan Pemenang Keseluruhan
-        $winnerTeam = array_sum($scoreA) > array_sum($scoreB) ? 'A' : (array_sum($scoreB) > array_sum($scoreA) ? 'B' : null);
+        // Tentukan Pemenang Keseluruhan (Berdasarkan Games Won yang diinput)
+        $winnerTeam = $scoreA[0] > $scoreB[0] ? 'A' : ($scoreB[0] > $scoreA[0] ? 'B' : null);
         if ($winnerTeam === null) {
             session()->setFlashdata('error', 'Skor total tidak boleh seri (Draw).');
             return redirect()->back()->withInput();
@@ -137,14 +197,13 @@ class Matches extends BaseController
         $this->matchModel->save([
             'schedule_id' => $scheduleId,
             'round'       => $round,
-            'status'      => 'Completed', // Asumsi setelah input skor, match selesai
+            'status'      => 'Completed',
             'winner_team' => $winnerTeam,
         ]);
         $matchId = $this->matchModel->getInsertID();
 
-        // Update status jadwal menjadi Completed jika match selesai
+        // Update status jadwal menjadi Completed
         $this->schedulesModel->update($scheduleId, ['status' => 'Completed']);
-
 
         // 2. Simpan ke match_players (4 Pemain)
         $dataPlayers = [];
@@ -159,19 +218,15 @@ class Matches extends BaseController
         }
         $this->matchPlayerModel->insertBatch($dataPlayers);
 
-        // 3. Simpan ke match_scores (Skor per Game)
-        $dataScores = [];
-        for ($i = 0; $i < count($scoreA); $i++) {
-            // Hanya simpan game jika skor diisi untuk kedua tim
-            if (!empty($scoreA[$i]) && !empty($scoreB[$i])) {
-                $dataScores[] = [
-                    'match_id'     => $matchId,
-                    'game_number'  => $i + 1,
-                    'team_a_score' => $scoreA[$i],
-                    'team_b_score' => $scoreB[$i],
-                ];
-            }
-        }
+        // 3. Simpan ke match_scores (Skor Games Won)
+        $dataScores = [
+            [
+                'match_id'     => $matchId,
+                'game_number'  => 1, // Menyimpan Games Won
+                'team_a_score' => (int)$scoreA[0],
+                'team_b_score' => (int)$scoreB[0],
+            ]
+        ];
         $this->matchScoreModel->insertBatch($dataScores);
 
         // --- Selesaikan Transaksi ---
@@ -182,7 +237,9 @@ class Matches extends BaseController
             return redirect()->back();
         }
 
-        session()->setFlashdata('success', 'Hasil pertandingan berhasil disimpan (3 tabel diperbarui)!');
+        $this->syncPlayerRankPoints($scheduleId, $matchId, $round);
+
+        session()->setFlashdata('success', 'Hasil pertandingan berhasil disimpan dan ranking poin disinkronkan!');
         return redirect()->to(site_url('admin/matches/' . $scheduleId));
     }
 
@@ -199,7 +256,9 @@ class Matches extends BaseController
         }
 
         // --- Mengambil Data Anak ---
-        $matchPlayersData = $this->matchPlayerModel->where('match_id', $matchId)->findAll();
+        // Perbaikan: Gunakan getPlayersByMatch dari Model
+        $matchPlayersData = $this->matchPlayerModel->getPlayersByMatch($matchId);
+
         $matchScoresData = $this->matchScoreModel->where('match_id', $matchId)->findAll();
         $allPlayers = $this->playersModel->findAll();
 
@@ -257,7 +316,8 @@ class Matches extends BaseController
             return redirect()->back()->withInput();
         }
 
-        $winnerTeam = array_sum($scoreA) > array_sum($scoreB) ? 'A' : (array_sum($scoreB) > array_sum($scoreA) ? 'B' : null);
+        // Tentukan Pemenang
+        $winnerTeam = $scoreA[0] > $scoreB[0] ? 'A' : ($scoreB[0] > $scoreA[0] ? 'B' : null);
         if ($winnerTeam === null) {
             session()->setFlashdata('error', 'Skor total tidak boleh seri (Draw).');
             return redirect()->back()->withInput();
@@ -296,20 +356,17 @@ class Matches extends BaseController
         }
         $this->matchPlayerModel->insertBatch($dataPlayers);
 
-        // 3. UPDATE match_scores (Hapus lama, Tambah baru)
+        // 3. UPDATE match_scores (Hapus lama, Tambah baru Games Won)
         $this->matchScoreModel->where('match_id', $matchId)->delete();
 
-        $dataScores = [];
-        for ($i = 0; $i < count($scoreA); $i++) {
-            if (!empty($scoreA[$i]) && !empty($scoreB[$i])) {
-                $dataScores[] = [
-                    'match_id'     => $matchId,
-                    'game_number'  => $i + 1,
-                    'team_a_score' => $scoreA[$i],
-                    'team_b_score' => $scoreB[$i],
-                ];
-            }
-        }
+        $dataScores = [
+            [
+                'match_id'     => $matchId,
+                'game_number'  => 1,
+                'team_a_score' => (int)($scoreA[0] ?? 0),
+                'team_b_score' => (int)($scoreB[0] ?? 0),
+            ]
+        ];
         $this->matchScoreModel->insertBatch($dataScores);
 
         // --- Selesaikan Transaksi ---
@@ -320,9 +377,12 @@ class Matches extends BaseController
             return redirect()->back();
         }
 
-        session()->setFlashdata('success', 'Hasil pertandingan berhasil diperbarui!');
+        $this->syncPlayerRankPoints($scheduleId, $matchId, $round);
+
+        session()->setFlashdata('success', 'Hasil pertandingan berhasil diperbarui dan ranking poin disinkronkan!');
         return redirect()->to(site_url('admin/matches/' . $scheduleId));
     }
+
 
     // ==================================================
     // DELETE: HAPUS PERTANDINGAN
@@ -338,7 +398,16 @@ class Matches extends BaseController
 
         $scheduleId = $match['schedule_id'];
 
-        // Menghapus baris matches, yang akan cascade menghapus match_players & match_scores
+        // 1. Hapus Poin Ranking terkait DULU
+        $matchPlayers = $this->matchPlayerModel->where('match_id', $matchId)->findAll();
+        foreach ($matchPlayers as $player) {
+            $this->playerRankPointModel
+                ->where('schedule_id', $scheduleId)
+                ->where('player_id', $player['player_id'])
+                ->delete();
+        }
+
+        // 2. Hapus Match (akan cascade menghapus match_players & match_scores)
         $deleted = $this->matchModel->delete($matchId);
 
         if ($deleted) {

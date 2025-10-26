@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-2 mb-3">
-            <span class="text-muted fw-light">Master/ Jadwal Pertandingan /</span> ID #<?= esc($schedule_id) ?>
+            <span class="text-muted fw-light">Master/ Jadwal Pertandingan /</span> ID <?= esc($schedule_id) ?>
         </h4>
 
         <?php if (session()->getFlashdata('success')): ?>
@@ -10,10 +10,6 @@
         <?php if (session()->getFlashdata('error')): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert"><?= session()->getFlashdata('error') ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
         <?php endif; ?>
-
-        <!-- <a href="<?= site_url('admin/schedules') ?>" class="btn btn-secondary mb-3">
-            <i class="bx bx-arrow-back me-1"></i> Kembali ke Jadwal
-        </a> -->
 
         <a href="<?= site_url('admin/matches/a_match/' . $schedule_id) ?>" class="btn btn-primary mb-3">
             <i class="bx bx-plus me-1"></i> Tambah Pertandingan Baru
@@ -48,7 +44,7 @@
                                 $totalScoreB = array_sum(array_column($scores, 'team_b_score'));
                             ?>
                                 <tr>
-                                    <td><strong>#<?= esc($match['id']) ?></strong></td>
+                                    <td><strong><?= esc($match['id']) ?></strong></td>
                                     <td><?= esc($match['round']) ?></td>
                                     <td><?= implode(' & ', $players['A']) ?></td>
                                     <td><?= implode(' & ', $players['B']) ?></td>
