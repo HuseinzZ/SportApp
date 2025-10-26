@@ -5,7 +5,7 @@
             <span class="text-primary"><?= esc($player['player_name']) ?></span>
         </h4>
 
-        <a href="<?= site_url('admin/ranking') ?>" class="btn btn-outline-secondary mb-3">
+        <a href="<?= site_url('admin/ranking') ?>" class="btn btn-secondary mb-3">
             <i class="bx bx-arrow-back me-1"></i> Kembali ke Ranking Global
         </a>
 

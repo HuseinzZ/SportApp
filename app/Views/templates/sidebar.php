@@ -76,8 +76,8 @@ $isTournamentActive = in_array($segment2, $tournament_segments);
             <span class="menu-header-text">Laporan</span>
         </li>
         <li class="menu-item <?= $segment2 === 'ranking' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/ranking') ?>" class="menu-link">
-                <div>Ranking Poin Global</div>
+            <a href="<?= base_url('admin/ranking') ?>" class="menu-link"> <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+                <div>Daftar Peringkat</div>
             </a>
         </li>
 

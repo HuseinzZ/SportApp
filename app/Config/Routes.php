@@ -92,4 +92,7 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     // ------------------------------------
     $routes->get('ranking', 'PlayerRanking::index');
     $routes->get('players/history/(:num)', 'Players::matchHistory/$1');
+    $routes->get('ranking/export/csv', 'PlayerRanking::exportCsv');
+    $routes->get('ranking/print', 'PlayerRanking::printReport');
+    $routes->get('ranking/export/excel', 'PlayerRanking::exportExcel');
 });
