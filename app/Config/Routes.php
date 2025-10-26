@@ -60,4 +60,34 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
 
     // Delete menggunakan Method Spoofing (POST/DELETE)
     $routes->match(['post', 'delete'], 'gallery/d_gallery/(:num)', 'Gallery::d_gallery/$1');
+
+    // ------------------------------------
+    // 🏆 Tournament Points Management
+    // ------------------------------------
+    $routes->get('tournament-points', 'TournamentPoints::index');                    // List Poin Turnamen
+    $routes->get('tournament-points/a_points', 'TournamentPoints::a_points');        // Tambah Poin (form)
+    $routes->post('tournament-points/store', 'TournamentPoints::store');             // Simpan Poin baru
+    $routes->get('tournament-points/e_points/(:num)', 'TournamentPoints::e_points/$1'); // Edit Poin (form)
+    $routes->match(['post', 'put'], 'tournament-points/update/(:num)', 'TournamentPoints::update/$1'); // Update Poin
+    $routes->get('tournament-points/d_points/(:num)', 'TournamentPoints::d_points/$1'); // Hapus Poin
+
+    // ------------------------------------
+    // 🗓️ Schedule Management (Jadwal)
+    // ------------------------------------
+    $routes->get('schedules', 'Schedules::index');                        // List Jadwal
+    $routes->get('schedules/a_schedules', 'Schedules::a_schedules');        // Tambah Jadwal (form)
+    $routes->post('schedules/store', 'Schedules::store');                 // Simpan Jadwal baru
+    $routes->get('schedules/e_schedules/(:num)', 'Schedules::e_schedules/$1'); // Edit Jadwal (form)
+    $routes->match(['post', 'put'], 'schedules/update/(:num)', 'Schedules::update/$1'); // Update Jadwal
+    $routes->get('schedules/d_schedules/(:num)', 'Schedules::d_schedules/$1'); // Hapus Jadwal
+
+    // ------------------------------------
+    // ⚔️ Match Management (Tabel Matches)
+    // ------------------------------------
+    $routes->get('matches/(:num)', 'Matches::index/$1');
+    $routes->get('matches/a_match/(:num)', 'Matches::a_match/$1');
+    $routes->post('matches/store', 'Matches::store');
+    $routes->get('matches/e_match/(:num)', 'Matches::e_match/$1');
+    $routes->match(['post', 'put'], 'matches/update/(:num)', 'Matches::update/$1');
+    $routes->get('matches/d_match/(:num)', 'Matches::d_match/$1');
 });

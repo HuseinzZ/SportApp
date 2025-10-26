@@ -1,12 +1,12 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> Tambah Event Galeri
+        <span class="text-muted fw-light">Master /</span> Tambah Galeri
     </h4>
 
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Form Tambah Event Galeri</h5>
-            <small class="text-muted float-end">Input data event galeri baru</small>
+            <h5 class="mb-0">Form Tambah Galeri</h5>
+            <small class="text-muted float-end">Input data galeri baru</small>
         </div>
         <div class="card-body">
             <form action="<?= site_url('admin/gallery/store') ?>" method="post" enctype="multipart/form-data">

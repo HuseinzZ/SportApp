@@ -1,5 +1,10 @@
 <?php
 $uri = service('uri');
+$segment2 = $uri->getSegment(2);
+
+// Menyertakan 'matches' agar menu induk tetap terbuka saat user di halaman match/index/ID
+$tournament_segments = ['schedules', 'tournament-points', 'matches'];
+$isTournamentActive = in_array($segment2, $tournament_segments);
 ?>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
@@ -17,7 +22,7 @@ $uri = service('uri');
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1 mt-4">
-        <li class="menu-item <?= $uri->getSegment(2) === 'dashboard' ? 'active' : '' ?>">
+        <li class="menu-item <?= $segment2 === 'dashboard' ? 'active' : '' ?>">
             <a href="<?= base_url('admin/dashboard') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div>Halaman Utama</div>
@@ -25,49 +30,47 @@ $uri = service('uri');
         </li>
 
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Master</span>
+            <span class="menu-header-text">Master Data</span>
         </li>
 
-        <li class="menu-item <?= $uri->getSegment(2) === 'gallery' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/gallery') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-images"></i>
-                <div>Galeri</div>
-            </a>
-        </li>
-
-        <li class="menu-item <?= $uri->getSegment(2) === 'gors' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/gors') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-area"></i>
-                <div>Gor</div>
-            </a>
-        </li>
-
-        <li class="menu-item <?= $uri->getSegment(2) === 'schedules' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/schedules') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-calendar-event"></i>
-                <div>Jadwal</div>
-            </a>
-        </li>
-
-        <li class="menu-item <?= $uri->getSegment(2) === 'players' ? 'active' : '' ?>">
+        <li class="menu-item <?= $segment2 === 'players' ? 'active' : '' ?>">
             <a href="<?= base_url('admin/players') ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-pin"></i>
                 <div>Pemain</div>
             </a>
         </li>
 
-        <li class="menu-item <?= $uri->getSegment(2) === 'points' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/points') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-list-ol"></i>
-                <div>Point</div>
+        <li class="menu-item <?= $segment2 === 'gors' ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/gors') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-area"></i>
+                <div>Gor</div>
             </a>
         </li>
 
-        <li class="menu-item <?= $uri->getSegment(2) === 'record-match' ? 'active' : '' ?>">
-            <a href="<?= base_url('admin/record-match') ?>" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-trophy"></i>
-                <div>Skor Pertandingan</div>
+        <li class="menu-item <?= $segment2 === 'gallery' ? 'active' : '' ?>">
+            <a href="<?= base_url('admin/gallery') ?>" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-images"></i>
+                <div>Galeri</div>
             </a>
+        </li>
+
+        <li class="menu-item <?= $isTournamentActive ? 'open active' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-trophy"></i>
+                <div>Manajemen Pertandingan</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item <?= $segment2 === 'schedules' || $segment2 === 'matches' ? 'active' : '' ?>">
+                    <a href="<?= base_url('admin/schedules') ?>" class="menu-link">
+                        <div>Jadwal Pertandingan</div>
+                    </a>
+                </li>
+                <li class="menu-item <?= $segment2 === 'tournament-points' ? 'active' : '' ?>">
+                    <a href="<?= base_url('admin/tournament-points') ?>" class="menu-link">
+                        <div>Poin Turnamen</div>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </aside>

@@ -14,7 +14,7 @@ class Gors extends BaseController
     }
 
     // ==============================
-    // TAMPILKAN DAFTAR FASILITAS (READ)
+    // TAMPILKAN DAFTAR GOR (READ)
     // ==============================
     public function index()
     {
@@ -48,17 +48,19 @@ class Gors extends BaseController
     }
 
     // ==============================
-    // SIMPAN DATA FASILITAS (CREATE LOGIC)
+    // SIMPAN DATA GOR (CREATE LOGIC)
     // ==============================
     public function store()
     {
+        $rule_gor_name = 'required|min_length[3]|is_unique[gors.gors_name]|regex_match[/^[A-Z\s]+$/]';
         $validationRules = [
             'gors_name' => [
-                'rules'  => 'required|min_length[3]|is_unique[gors.gors_name]',
+                'rules'  => $rule_gor_name,
                 'errors' => [
-                    'required'   => 'Nama GOR harus diisi.',
-                    'min_length' => 'Nama minimal 3 karakter.',
-                    'is_unique'  => 'Nama GOR sudah terdaftar.',
+                    'required'    => 'Nama GOR harus diisi.',
+                    'min_length'  => 'Nama minimal 3 karakter.',
+                    'is_unique'   => 'Nama GOR sudah terdaftar.',
+                    'regex_match' => 'Nama GOR harus menggunakan huruf kapital semua dan tidak boleh mengandung angka, titik, atau tanda hubung.'
                 ],
             ],
             'address'  => 'required',
@@ -137,20 +139,15 @@ class Gors extends BaseController
             return redirect()->to(site_url('admin/gors'));
         }
 
-        // 1. Aturan Validasi
-        $rule_gor_name = 'required|min_length[3]';
-        if ($this->request->getPost('gors_name') !== $gor['gors_name']) {
-            $rule_gor_name .= '|is_unique[gors.gors_name]';
-        }
-
-        // RULES DISAMAKAN DENGAN PLAYERS (untuk bagian foto)
+        $rule_gor_name = 'required|min_length[3]|regex_match[/^[A-Z\s]+$/]';
         $validationRules = [
             'gors_name' => [
                 'rules'  => $rule_gor_name,
                 'errors' => [
-                    'required'   => 'Nama GOR harus diisi.',
-                    'min_length' => 'Nama minimal 3 karakter.',
-                    'is_unique'  => 'Nama GOR sudah terdaftar.',
+                    'required'    => 'Nama GOR harus diisi.',
+                    'min_length'  => 'Nama minimal 3 karakter.',
+                    'is_unique'   => 'Nama GOR sudah terdaftar.',
+                    'regex_match' => 'Nama GOR harus menggunakan huruf kapital semua dan tidak boleh mengandung angka, titik, atau tanda hubung.'
                 ],
             ],
             'address'  => 'required',
@@ -203,7 +200,7 @@ class Gors extends BaseController
     }
 
     // ==============================
-    // HAPUS FASILITAS (DELETE)
+    // HAPUS GOR (DELETE)
     // ==============================
     public function d_gors($id = null)
     {

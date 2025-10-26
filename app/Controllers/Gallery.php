@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\GalleryModel;
-use CodeIgniter\Controller;
 
 class Gallery extends BaseController
 {
@@ -12,7 +11,6 @@ class Gallery extends BaseController
     public function __construct()
     {
         $this->galleryModel = new GalleryModel();
-        helper('date_id');
     }
 
     // ==============================
@@ -21,7 +19,7 @@ class Gallery extends BaseController
     public function index()
     {
         $data = [
-            'title'      => 'Master Data Galeri Event',
+            'title'      => 'Master Data Galeri',
             'gallery_list' => $this->galleryModel->orderBy('event_date', 'DESC')->findAll(),
         ];
 
@@ -38,7 +36,7 @@ class Gallery extends BaseController
     public function a_gallery()
     {
         $data = [
-            'title'      => 'Tambah Event Galeri',
+            'title'      => 'Tambah Galeri',
             'validation' => \Config\Services::validation(),
         ];
 
@@ -92,7 +90,7 @@ class Gallery extends BaseController
             'photo'         => $namaPhoto,
         ]);
 
-        session()->setFlashdata('success', 'Event Galeri berhasil ditambahkan!');
+        session()->setFlashdata('success', 'Galeri berhasil ditambahkan!');
         return redirect()->to(site_url('admin/gallery'));
     }
 
@@ -104,12 +102,12 @@ class Gallery extends BaseController
         $item = $this->galleryModel->find($id);
 
         if (!$item) {
-            session()->setFlashdata('error', 'Data Event Galeri tidak ditemukan.');
+            session()->setFlashdata('error', 'Data Galeri tidak ditemukan.');
             return redirect()->to(site_url('admin/gallery'));
         }
 
         $data = [
-            'title'      => 'Edit Event Galeri',
+            'title'      => 'Edit Galeri',
             'validation' => \Config\Services::validation(),
             'item'       => $item,
         ];
@@ -129,7 +127,7 @@ class Gallery extends BaseController
         $item = $this->galleryModel->find($id);
 
         if (!$item) {
-            session()->setFlashdata('error', 'Data Event Galeri tidak ditemukan.');
+            session()->setFlashdata('error', 'Data Galeri tidak ditemukan.');
             return redirect()->to(site_url('admin/gallery'));
         }
 
@@ -184,7 +182,7 @@ class Gallery extends BaseController
             'photo'         => $namaPhoto,
         ]);
 
-        session()->setFlashdata('success', 'Event Galeri berhasil diperbarui! ');
+        session()->setFlashdata('success', 'Galeri berhasil diperbarui! ');
         return redirect()->to(site_url('admin/gallery'));
     }
 
@@ -194,7 +192,7 @@ class Gallery extends BaseController
     public function d_gallery($id = null)
     {
         if (!$id) {
-            session()->setFlashdata('error', 'ID Event Galeri tidak ditemukan.');
+            session()->setFlashdata('error', 'ID Galeri tidak ditemukan.');
             return redirect()->to(site_url('admin/gallery'));
         }
 
@@ -210,9 +208,9 @@ class Gallery extends BaseController
             }
 
             $this->galleryModel->delete($id);
-            session()->setFlashdata('success', 'Event Galeri berhasil dihapus!');
+            session()->setFlashdata('success', 'Galeri berhasil dihapus!');
         } else {
-            session()->setFlashdata('error', 'Data Event Galeri tidak ditemukan.');
+            session()->setFlashdata('error', 'Data Galeri tidak ditemukan.');
         }
 
         return redirect()->to(site_url('admin/gallery'));

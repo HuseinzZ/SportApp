@@ -17,7 +17,7 @@
                     <label for="gors_name" class="form-label">Nama GOR</label>
                     <input type="text" name="gors_name" id="gors_name"
                         class="form-control <?= (session('validation') && session('validation')->hasError('gors_name')) ? 'is-invalid' : '' ?>"
-                        placeholder="Masukkan nama GOR" value="<?= old('gors_name', $gor['gors_name']) ?>" />
+                        placeholder="Masukan nama GOR" value="<?= old('gors_name', $gor['gors_name']) ?>" readonly />
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('gors_name') : '' ?>
                     </div>
@@ -37,7 +37,7 @@
                     <label for="contact" class="form-label">Kontak (Telp/HP)</label>
                     <input type="text" name="contact" id="contact"
                         class="form-control <?= (session('validation') && session('validation')->hasError('contact')) ? 'is-invalid' : '' ?>"
-                        placeholder="Masukkan nomor kontak" value="<?= old('contact', $gor['contact']) ?>" />
+                        placeholder="Contoh: +62-123-4567-8910" value="<?= old('contact', $gor['contact']) ?>" />
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('contact') : '' ?>
                     </div>
@@ -47,7 +47,7 @@
                     <label for="description" class="form-label">Deskripsi</label>
                     <textarea name="description" id="description" rows="3"
                         class="form-control <?= (session('validation') && session('validation')->hasError('description')) ? 'is-invalid' : '' ?>"
-                        placeholder="Contoh: Lapangan menggunakan fasilitas AC"><?= old('description', $gor['description']) ?></textarea>
+                        placeholder="Masukan deskripsi GOR"><?= old('description', $gor['description']) ?></textarea>
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('description') : '' ?>
                     </div>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="photo" class="form-label">Foto Fasilitas</label>
+                    <label for="photo" class="form-label">Foto GOR</label>
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         <div class="position-relative">
                             <img id="photoPreview"

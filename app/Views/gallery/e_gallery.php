@@ -1,12 +1,12 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> Edit Event Galeri
+        <span class="text-muted fw-light">Master /</span> Edit Galeri
     </h4>
 
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Form Edit Event Galeri</h5>
-            <small class="text-muted float-end">Ubah data event galeri</small>
+            <h5 class="mb-0">Form Edit Galeri</h5>
+            <small class="text-muted float-end">Ubah data galeri</small>
         </div>
 
         <div class="card-body">

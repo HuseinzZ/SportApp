@@ -16,7 +16,7 @@
                     <label for="gors_name" class="form-label">Nama GOR</label>
                     <input type="text" name="gors_name" id="gors_name"
                         class="form-control <?= (session('validation') && session('validation')->hasError('gors_name')) ? 'is-invalid' : '' ?>"
-                        placeholder="Masukan nama GOR" value="<?= old('gors_name') ?>" />
+                        placeholder="Contoh: GOR WIWAHA" value="<?= old('gors_name') ?>" />
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('gors_name') : '' ?>
                     </div>
@@ -36,7 +36,7 @@
                     <label for="contact" class="form-label">Kontak (Telp/HP)</label>
                     <input type="text" name="contact" id="contact"
                         class="form-control <?= (session('validation') && session('validation')->hasError('contact')) ? 'is-invalid' : '' ?>"
-                        placeholder="Masukkan nomor kontak" value="<?= old('contact') ?>" />
+                        placeholder="Contoh: +62-123-4567-8910" value="<?= old('contact') ?>" />
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('contact') : '' ?>
                     </div>
@@ -46,7 +46,7 @@
                     <label for="description" class="form-label">Deskripsi</label>
                     <textarea name="description" id="description" rows="3"
                         class="form-control <?= (session('validation') && session('validation')->hasError('description')) ? 'is-invalid' : '' ?>"
-                        placeholder="Contoh: GOR menggunakan fasilitas AC"><?= old('description') ?></textarea>
+                        placeholder="Contoh: Masukan deskripsi GOR"><?= old('description') ?></textarea>
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('description') : '' ?>
                     </div>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="photo" class="form-label">Foto Fasilitas</label>
+                    <label for="photo" class="form-label">Foto GOR</label>
                     <input class="form-control <?= (session('validation') && session('validation')->hasError('photo')) ? 'is-invalid' : '' ?>"
                         type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)" />
                     <div class="invalid-feedback">
