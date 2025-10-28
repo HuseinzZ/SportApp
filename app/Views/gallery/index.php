@@ -17,6 +17,7 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Foto</th>
                             <th>Judul Event</th>
                             <th>Deskripsi</th>
@@ -32,6 +33,7 @@
                         <?php else: ?>
                             <?php foreach ($gallery_list as $item): ?>
                                 <tr>
+                                    <td><?= esc($item['id']) ?></td>
                                     <td>
                                         <?php if (!empty($item['photo'])): ?>
                                             <img src="<?= base_url('assets/img/gallery/' . $item['photo']) ?>"

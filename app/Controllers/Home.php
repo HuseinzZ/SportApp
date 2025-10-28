@@ -2,10 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Models\PlayerRankPointModel;
+use App\Models\PlayersModel;
+
 class Home extends BaseController
 {
-    public function index(): string
+    protected $playerRankPointModel;
+    protected $playersModel;
+
+    public function __construct()
     {
-        return view('welcome_message');
+        $this->playerRankPointModel = new PlayerRankPointModel();
+        $this->playersModel = new PlayersModel();
     }
+
+    public function index() {}
 }

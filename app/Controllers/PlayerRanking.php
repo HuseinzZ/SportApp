@@ -22,7 +22,7 @@ class PlayerRanking extends BaseController
         $playerDetails = array_column($this->playersModel->findAll(), null, 'id');
 
         $data = [
-            'title'   => 'Ranking Poin Global',
+            'title'   => 'Daftar Peringkat',
             'ranking' => $ranking,
             'playerDetails' => $playerDetails,
         ];
@@ -35,7 +35,7 @@ class PlayerRanking extends BaseController
     }
 
     // ======================================
-    // ✅ METHOD BARU: EKSPOR DATA CSV
+    // METHOD BARU: EKSPOR DATA CSV
     // ======================================
     public function exportCsv()
     {
@@ -66,7 +66,7 @@ class PlayerRanking extends BaseController
     }
 
     // ======================================
-    // ✅ METHOD BARU: TAMPILAN CETAK (PRINT)
+    // METHOD BARU: TAMPILAN CETAK (PRINT)
     // ======================================
     public function printReport()
     {
@@ -83,6 +83,10 @@ class PlayerRanking extends BaseController
         echo view('player_ranking/print_report', $data);
         // Tidak memuat templates/table_header, templates/sidebar, dll.
     }
+
+    // ======================================
+    // METHOD BARU: EKSPOR DATA EXCEL
+    // ======================================
 
     public function exportExcel()
     {
