@@ -9,7 +9,12 @@ use CodeIgniter\Router\RouteCollection;
 // ========================================
 // 🔹 Public Routes
 // ========================================
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Home::landingPage');
+$routes->get('leaderboard', 'Home::index');
+$routes->get('leaderboard/(:num)', 'Home::matchHistory/$1');
+$routes->get('gallery', 'Home::gallery');
+$routes->get('about', 'Home::about');
+$routes->get('match', 'Home::match');
 
 // Login Page (GET & POST)
 $routes->match(['get', 'post'], 'admin', 'Auth::index');

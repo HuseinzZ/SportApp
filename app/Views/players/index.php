@@ -28,7 +28,6 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nama Pemain</th>
                             <th>Level</th>
                             <th>Jenis Kelamin</th>
@@ -45,7 +44,6 @@
                         <?php else: ?>
                             <?php foreach ($players as $player): ?>
                                 <tr>
-                                    <td><strong><?= esc($player['id']) ?></strong></td>
                                     <td><?= esc($player['player_name']) ?></td>
                                     <td>
                                         <span class="badge bg-label-<?= $player['level'] === 'Utama' ? 'info' : 'secondary' ?> me-1">

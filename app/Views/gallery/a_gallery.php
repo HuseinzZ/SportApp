@@ -48,18 +48,19 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="photo" class="form-label">Foto Event</label>
-                    <input class="form-control <?= (session('validation') && session('validation')->hasError('photo')) ? 'is-invalid' : '' ?>"
-                        type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)" />
-                    <div class="invalid-feedback">
-                        <?= session('validation') ? session('validation')->getError('photo') : '' ?>
-                    </div>
+                    <label for="photo" class="form-label">Foto Event (Bisa lebih dari satu)</label>
+                    <input class="form-control"
+                        type="file"
+                        id="photo"
+                        name="photo[]"
+                        accept="image/*"
+                        multiple
+                        onchange="previewPhotos(event)" />
+                    <small class="text-muted">Pilih satu atau lebih foto (JPG, JPEG, PNG).</small>
                 </div>
 
-                <div class="mb-3 text-center">
-                    <img id="photoPreview" src="#" alt="Preview Foto Event"
-                        style="max-width: 250px; display: none; border-radius: 8px; border: 1px solid #ccc; padding: 5px;">
-                </div>
+                <div class="mb-3 text-center" id="previewContainer"
+                    style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
 
                 <div class="mt-4">
                     <button type="submit" class="btn btn-primary me-2">
@@ -75,16 +76,27 @@
 </div>
 
 <script>
-    function previewPhoto(event) {
-        const preview = document.getElementById('photoPreview');
-        const file = event.target.files[0];
+    function previewPhotos(event) {
+        const container = document.getElementById('previewContainer');
+        container.innerHTML = '';
+        const files = event.target.files;
 
-        if (file) {
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-        } else {
-            preview.src = '';
-            preview.style.display = 'none';
+        if (files.length > 0) {
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '120px';
+                    img.style.height = '120px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '8px';
+                    img.style.border = '1px solid #ccc';
+                    img.style.padding = '4px';
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
         }
     }
 </script>

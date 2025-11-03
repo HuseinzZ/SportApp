@@ -20,7 +20,7 @@ class TournamentPoints extends BaseController
     {
         $data = [
             'title'   => 'Master Poin Pertandingan',
-            'points'  => $this->tournamentPointsModel->findAll(),
+            'points'  => $this->tournamentPointsModel->orderBy('series_level', 'ASC')->findAll(),
         ];
 
         echo view('templates/table_header', $data);

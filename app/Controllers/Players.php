@@ -20,7 +20,7 @@ class Players extends BaseController
     {
         $data = [
             'title'   => 'Master Data Pemain',
-            'players' => $this->playersModel->findAll(),
+            'players' => $this->playersModel->orderBy('player_name', 'ASC')->findAll(),
         ];
 
         echo view('templates/table_header', $data);

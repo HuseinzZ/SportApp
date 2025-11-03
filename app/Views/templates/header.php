@@ -38,6 +38,32 @@
     <script src="<?= base_url('assets/vendor/js/helpers.js') ?>"></script>
 
     <script src="<?= base_url('assets/js/config.js') ?>"></script>
+
+    <script>
+        function nextSlide() {
+            const carousel = document.getElementById('imageCarousel');
+            if (carousel && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                const carouselInstance = bootstrap.Carousel.getInstance(carousel) || new bootstrap.Carousel(carousel);
+                carouselInstance.next();
+            } else {
+                console.error("Bootstrap Carousel not found or initialized.");
+            }
+        }
+    </script>
+
+    <script src="<?= base_url('assets/vendor/libs/jquery/jquery.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/libs/popper/popper.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/js/bootstrap.js') ?>"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const myCarousel = document.querySelector('#imageCarousel');
+            const carousel = new bootstrap.Carousel(myCarousel, {
+                interval: 3000,
+                ride: 'carousel'
+            });
+        });
+    </script>
+
 </head>
 
 <body>

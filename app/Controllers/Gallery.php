@@ -52,7 +52,7 @@ class Gallery extends BaseController
     // ==============================
     public function store()
     {
-        // Aturan Validasi (Mirip Players/Gors)
+        // Validasi field selain foto
         $validationRules = [
             'title' => [
                 'rules'  => 'required|min_length[3]|max_length[255]',
@@ -63,34 +63,50 @@ class Gallery extends BaseController
             ],
             'event_date'  => 'required|valid_date',
             'description' => 'permit_empty',
-            'photo' => [ // Aturan Foto
-                'rules'  => 'uploaded[photo]|max_size[photo,2048]|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]',
-                'errors' => [
-                    'uploaded' => 'Foto event harus diupload.',
-                    'max_size' => 'Ukuran foto maksimal 2MB.',
-                    'is_image' => 'File harus berupa gambar.',
-                    'mime_in'  => 'Format gambar tidak didukung (hanya JPG, JPEG, PNG).',
-                ],
-            ],
         ];
 
         if (!$this->validate($validationRules)) {
             return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
-        // Upload foto
-        $filePhoto = $this->request->getFile('photo');
-        $namaPhoto = $filePhoto->getRandomName();
-        $filePhoto->move(FCPATH . 'assets/img/gallery', $namaPhoto);
+        // Ambil semua file dari input multiple
+        $files = $this->request->getFiles();
 
-        $this->galleryModel->save([
-            'title'         => $this->request->getPost('title'),
-            'description'   => $this->request->getPost('description'),
-            'event_date'    => $this->request->getPost('event_date'),
-            'photo'         => $namaPhoto,
-        ]);
+        if (!isset($files['photo']) || empty($files['photo'])) {
+            session()->setFlashdata('error', 'Minimal satu foto harus diupload.');
+            return redirect()->back()->withInput();
+        }
 
-        session()->setFlashdata('success', 'Galeri berhasil ditambahkan!');
+        $photos = $files['photo'];
+        $savedCount = 0;
+
+        foreach ($photos as $file) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                // Pastikan formatnya benar
+                if (!in_array($file->getExtension(), ['jpg', 'jpeg', 'png'])) {
+                    continue;
+                }
+
+                $namaPhoto = $file->getRandomName();
+                $file->move(FCPATH . 'assets/img/gallery', $namaPhoto);
+
+                $this->galleryModel->save([
+                    'title'       => $this->request->getPost('title'),
+                    'description' => $this->request->getPost('description'),
+                    'event_date'  => $this->request->getPost('event_date'),
+                    'photo'       => $namaPhoto,
+                ]);
+
+                $savedCount++;
+            }
+        }
+
+        if ($savedCount > 0) {
+            session()->setFlashdata('success', "$savedCount foto berhasil ditambahkan ke galeri!");
+        } else {
+            session()->setFlashdata('error', 'Tidak ada foto yang berhasil diupload.');
+        }
+
         return redirect()->to(site_url('admin/gallery'));
     }
 
@@ -143,9 +159,9 @@ class Gallery extends BaseController
             'event_date'  => 'required|valid_date',
             'description' => 'permit_empty',
             'photo' => [ // Aturan Foto (optional untuk update)
-                'rules'  => 'if_exist|max_size[photo,2048]|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]',
+                'rules'  => 'if_exist|max_size[photo,5120]|is_image[photo]|mime_in[photo,image/jpg,image/jpeg,image/png]',
                 'errors' => [
-                    'max_size' => 'Ukuran foto maksimal 2MB.',
+                    'max_size' => 'Ukuran foto maksimal 5MB.',
                     'is_image' => 'File harus berupa gambar.',
                     'mime_in'  => 'Format gambar tidak didukung (hanya JPG, JPEG, PNG).',
                 ],

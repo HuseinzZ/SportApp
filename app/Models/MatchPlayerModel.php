@@ -82,4 +82,20 @@ class MatchPlayerModel extends Model
 
         return $query->get()->getResultArray();
     }
+
+    public function getPlayerMatchStats(int $playerId): array
+    {
+        $result = $this->db->table('matches m')
+            ->select('
+            COUNT(m.id) AS Total_Match,
+            SUM(CASE WHEN mp.team = m.winner_team THEN 1 ELSE 0 END) AS Total_Menang,
+            SUM(CASE WHEN mp.team != m.winner_team AND m.winner_team IS NOT NULL THEN 1 ELSE 0 END) AS Total_Kalah
+        ')
+            ->join('match_players mp', 'm.id = mp.match_id')
+            ->where('mp.player_id', $playerId)
+            ->where('m.status', 'Completed')
+            ->get()
+            ->getRowArray();
+        return $result ?: ['Total_Match' => 0, 'Total_Menang' => 0, 'Total_Kalah' => 0];
+    }
 }

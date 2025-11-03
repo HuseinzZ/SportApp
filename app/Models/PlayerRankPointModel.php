@@ -21,6 +21,15 @@ class PlayerRankPointModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
+    public function getPlayerTotalPoints(int $playerId): array
+    {
+        $result = $this->select('SUM(points_earned) AS total_points')
+            ->where('player_id', $playerId)
+            ->first();
+
+        return $result ?: ['total_points' => 0];
+    }
+
     public function getGlobalRanking()
     {
         return $this->select('player_id, SUM(points_earned) AS total_points, players.player_name')

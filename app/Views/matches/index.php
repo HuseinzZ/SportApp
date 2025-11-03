@@ -24,7 +24,6 @@
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>MATCH ID</th>
                                 <th>BABAK</th>
                                 <th>TIM A (PASANGAN)</th>
                                 <th>TIM B (PASANGAN)</th>
@@ -44,7 +43,6 @@
                                 $totalScoreB = array_sum(array_column($scores, 'team_b_score'));
                             ?>
                                 <tr>
-                                    <td><strong><?= esc($match['id']) ?></strong></td>
                                     <td><?= esc($match['round']) ?></td>
                                     <td><?= implode(' & ', $players['A']) ?></td>
                                     <td><?= implode(' & ', $players['B']) ?></td>

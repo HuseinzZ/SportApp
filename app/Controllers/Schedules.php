@@ -5,21 +5,21 @@ namespace App\Controllers;
 use App\Models\SchedulesModel;
 use App\Models\GorsModel;
 use App\Models\TournamentPointsModel;
-use App\Models\MatchModel; // ✅ tambahkan ini
+use App\Models\MatchModel;
 
 class Schedules extends BaseController
 {
     protected $schedulesModel;
     protected $gorsModel;
     protected $tournamentPointsModel;
-    protected $matchModel; // ✅ tambahkan properti baru
+    protected $matchModel;
 
     public function __construct()
     {
         $this->schedulesModel = new SchedulesModel();
         $this->gorsModel = new GorsModel();
         $this->tournamentPointsModel = new TournamentPointsModel();
-        $this->matchModel = new MatchModel(); // ✅ inisialisasi MatchModel
+        $this->matchModel = new MatchModel();
     }
 
     // ======================================
@@ -29,7 +29,6 @@ class Schedules extends BaseController
     {
         $schedules = $this->schedulesModel->getSchedulesWithDetails();
 
-        // ✅ Tambahkan pengecekan apakah jadwal sudah punya match
         foreach ($schedules as &$s) {
             $s['has_match'] = $this->matchModel
                 ->where('schedule_id', $s['id'])
@@ -217,7 +216,6 @@ class Schedules extends BaseController
             return redirect()->to(site_url('admin/schedules'));
         }
 
-        // ✅ karena FK cascade, matches ikut terhapus
         $deleted = $this->schedulesModel->delete($id);
 
         if ($deleted) {

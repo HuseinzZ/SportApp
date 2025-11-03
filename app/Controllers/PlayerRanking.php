@@ -74,7 +74,7 @@ class PlayerRanking extends BaseController
         $playerDetails = array_column($this->playersModel->findAll(), null, 'id');
 
         $data = [
-            'title'   => 'Laporan Ranking Poin Global',
+            'title'   => 'Laporan Daftar Peringkat',
             'ranking' => $ranking,
             'playerDetails' => $playerDetails,
         ];

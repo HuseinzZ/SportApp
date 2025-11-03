@@ -28,7 +28,6 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>LEVEL PERTANDINGAN</th>
                             <th>CHAMPION</th>
                             <th>RUNNER UP</th>
@@ -47,7 +46,6 @@
                         <?php else: ?>
                             <?php foreach ($points as $point): ?>
                                 <tr>
-                                    <td><strong><?= esc($point['id']) ?></strong></td>
                                     <td><?= esc($point['series_level']) ?></td>
                                     <td><?= esc($point['points_champion']) ?></td>
                                     <td><?= esc($point['points_runnerup']) ?></td>

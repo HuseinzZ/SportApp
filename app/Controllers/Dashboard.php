@@ -15,10 +15,10 @@ class Dashboard extends BaseController
             // 'recent_bookings' => $this->bookingModel->getRecent(),
         ];
 
-        echo view('templates/header', $data);
+        echo view('templates/table_header', $data);
         echo view('templates/sidebar');
         echo view('templates/topbar');
         echo view('dashboard/index', $data);
-        echo view('templates/footer');
+        echo view('templates/table_footer');
     }
 }

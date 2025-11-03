@@ -27,7 +27,6 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Nama GOR</th>
                             <th>Alamat</th>
                             <th>Kontak</th>
@@ -45,7 +44,6 @@
                         <?php else: ?>
                             <?php foreach ($gor_list as $gor): ?>
                                 <tr>
-                                    <td><strong><?= esc($gor['id']) ?></strong></td>
                                     <td><?= esc($gor['gors_name']) ?></td>
                                     <td><?= esc(substr($gor['address'], 0, 30)) . (strlen($gor['address']) > 30 ? '...' : '') ?></td>
 

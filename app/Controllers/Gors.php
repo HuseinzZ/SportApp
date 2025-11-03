@@ -20,7 +20,7 @@ class Gors extends BaseController
     {
         $data = [
             'title'    => 'Master Data GOR',
-            'gor_list' => $this->gorModel->findAll(),
+            'gor_list' => $this->gorModel->orderBy('gors_name', 'ASC')->findAll(),
         ];
 
         echo view('templates/table_header', $data);
