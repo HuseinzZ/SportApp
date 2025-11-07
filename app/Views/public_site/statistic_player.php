@@ -16,20 +16,22 @@
                             <img src="<?= $photoUrl ?>"
                                 alt="<?= esc($player['player_name']) ?>"
                                 class="rounded-circle shadow-sm mb-3"
-                                style="width: 80px; height: 80px; object-fit: cover; border: 3px solid #f8f9fa;">
+                                style="width: 100px; height: 100px; object-fit: cover; border: 4px solid #f8f9fa;">
                         <?php else: ?>
                             <div class="d-inline-block rounded-circle bg-label-secondary text-secondary p-3 mb-3"
-                                style="width: 80px; height: 80px; font-size: 2rem; line-height: 2;">
+                                style="width: 100px; height: 100px; font-size: 3rem; line-height: 2;">
                                 <i class='bx bx-user'></i>
                             </div>
                         <?php endif; ?>
 
-                        <h4 class="fw-bold mb-1"><?= esc($player['player_name'] ?? 'N/A') ?></h4>
+                        <h3 class="fw-bolder mb-1 text-dark"><?= esc($player['player_name'] ?? 'N/A') ?></h3>
                         <span class="badge bg-label-secondary"><?= esc($player['level'] ?? '-') ?></span>
                     </div>
+
+                    <hr class="my-4">
                     <h5 class="fw-bold mb-3 text-dark"><i class="bx bx-tachometer me-2"></i> Kinerja Dasar</h5>
 
-                    <div class="d-flex justify-content-between align-items-end mb-4 pb-2 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
                         <div>
                             <span class="text-muted d-block small mb-1">Total Poin:</span>
                             <strong class="text-primary h2 fw-bolder"><?= number_format($playerStats['poin'] ?? 0, 0, ',', '.') ?></strong>
@@ -50,10 +52,10 @@
                         <div class="d-flex justify-content-between align-items-center mb-1">
                             <span class="fw-bold">Win Rate:</span>
                             <span class="h5 text-dark">
-                                <strong><?= $playerStats['win_rate'] ?? 0 ?>%</strong>
+                                <span class="fw-bolder"><?= $playerStats['win_rate'] ?? 0 ?>%</span>
                             </span>
                         </div>
-                        <div class="progress" style="height: 8px;">
+                        <div class="progress" style="height: 10px;">
                             <div class="progress-bar bg-success" role="progressbar"
                                 style="width: <?= $playerStats['win_rate'] ?? 0 ?>%;"
                                 aria-valuenow="<?= $playerStats['win_rate'] ?? 0 ?>" aria-valuemin="0" aria-valuemax="100">
@@ -63,23 +65,23 @@
 
                     <div class="row g-2">
                         <div class="col-4">
-                            <div class="card bg-light p-2 text-center">
-                                <span class="text-muted small d-block">Total</span>
-                                <h5 class="fw-bold mb-0"><?= $playerStats['total_match'] ?? 0 ?></h5>
+                            <div class="card bg-label-secondary p-2 text-center">
+                                <span class="text-muted small d-block">Total Match</span>
+                                <h5 class="fw-bolder mb-0 text-dark"><?= $playerStats['total_match'] ?? 0 ?></h5>
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="card p-2 bg-success text-white text-center">
                                 <span class="small d-block text-white">Menang</span>
-                                <h5 class="fw-bold mb-0"><?= $playerStats['menang'] ?? 0 ?></h5>
+                                <h5 class="fw-bolder mb-0"><?= $playerStats['menang'] ?? 0 ?></h5>
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="card p-2 bg-danger text-white text-center">
                                 <span class="small d-block text-white">Kalah</span>
-                                <h5 class="fw-bold mb-0"><?= $playerStats['kalah'] ?? 0 ?></h5>
+                                <h5 class="fw-bolder mb-0"><?= $playerStats['kalah'] ?? 0 ?></h5>
                             </div>
                         </div>
                     </div>
@@ -102,17 +104,20 @@
                                 $badgeText = $isWinner ? 'Menang' : 'Kalah';
                             ?>
                                 <div class="card p-2 text-white shadow-sm transition-300"
-                                    style="width: 100px; background-color: <?= $bgColor ?>; border-radius: 6px;">
-                                    <small class="text-truncate mb-1 opacity-75 small" title="<?= esc($opponentTeam) ?>">
+                                    style="width: 130px; background-color: <?= $bgColor ?>; border-radius: 8px;">
+
+                                    <span class="d-block text-truncate mb-1 opacity-90 fw-bold" title="<?= esc($opponentTeam) ?>" style="font-size: 0.875rem;">
                                         <?= esc($opponentTeam) ?>
-                                    </small>
+                                    </span>
+
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 fw-bolder"><?= esc($opponentScore) ?></span>
-                                        <span class="text-light mx-1 opacity-50 small">/</span>
-                                        <span class="h5 fw-bolder"><?= esc($mainScore) ?></span>
+                                        <span class="h4 fw-bolder"><?= esc($opponentScore) ?></span>
+                                        <span class="text-light mx-1 opacity-50 small">vs</span>
+                                        <span class="h4 fw-bolder"><?= esc($mainScore) ?></span>
                                     </div>
+
                                     <span class="badge text-white mt-1 p-0 small"
-                                        style="background-color: rgba(0,0,0,0.2);"><?= $badgeText ?></span>
+                                        style="background-color: rgba(0,0,0,0.2); border-radius: 4px;"><?= $badgeText ?></span>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>

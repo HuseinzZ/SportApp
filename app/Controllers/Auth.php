@@ -18,7 +18,7 @@ class Auth extends BaseController
         $validation = \Config\Services::validation();
 
         $data = [
-            'title'      => 'Login Admin',
+            'title'      => 'Login',
             'validation' => $validation,
         ];
 
@@ -92,7 +92,7 @@ class Auth extends BaseController
         $adminId = session()->get('id_admin');
 
         $data = [
-            'title'      => 'Ganti Sandi Akun',
+            'title'      => 'Ganti Sandi',
             'validation' => $validation,
         ];
 

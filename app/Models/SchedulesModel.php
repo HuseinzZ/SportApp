@@ -26,7 +26,7 @@ class SchedulesModel extends Model
 
     public function getSchedulesWithDetails()
     {
-        return $this->select('schedules.*, gors.gors_name, tournament_points.series_level')
+        return $this->select('schedules.*, gors.gors_name, gors.photo, tournament_points.series_level')
             ->join('gors', 'gors.id = schedules.gors_id')
             ->join('tournament_points', 'tournament_points.id = schedules.tournament_points_id')
             ->findAll();

@@ -1,12 +1,10 @@
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-        <!-- Header Judul Halaman -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold mb-0">
                 <span class="text-muted fw-light">Laporan /</span> Daftar Peringkat
             </h4>
             <div class="d-flex align-items-center gap-2">
-                <!-- Dropdown Ekspor -->
                 <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" type="button" id="exportDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,14 +26,12 @@
                     </ul>
                 </div>
 
-                <!-- Tombol Print -->
                 <a href="<?= site_url('admin/ranking/print') ?>" class="btn btn-primary">
                     <i class="bx bx-printer me-1"></i> Cetak
                 </a>
             </div>
         </div>
 
-        <!-- Info Box -->
         <div class="alert alert-info d-flex align-items-center" role="alert">
             <i class="bx bx-info-circle me-2 fs-4"></i>
             <div>
@@ -43,12 +39,35 @@
             </div>
         </div>
 
-        <!-- Card Tabel -->
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div class="card-header bg-primary d-flex flex-wrap justify-content-between align-items-center gap-2">
                 <h5 class="mb-0 text-white"><i class="bx bx-bar-chart me-2"></i> Daftar Peringkat</h5>
-                <span class="badge bg-light text-primary">Total: <?= count($ranking) ?> Pemain</span>
+
+                <form id="filterRankingForm" action="<?= site_url('admin/ranking') ?>" method="get"
+                    class="d-flex flex-wrap align-items-center gap-2">
+
+                    <div class="input-group input-group-sm" style="width: 180px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bx bx-filter-alt"></i>
+                        </span>
+                        <select name="level" id="levelFilter" class="form-select border-start-0"
+                            onchange="document.getElementById('filterRankingForm').submit()">
+                            <option value="">Semua Level</option>
+                            <option value="Utama" <?= (isset($selectedLevel) && $selectedLevel === 'Utama') ? 'selected' : '' ?>>Utama</option>
+                            <option value="Pratama" <?= (isset($selectedLevel) && $selectedLevel === 'Pratama') ? 'selected' : '' ?>>Pratama</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group input-group-sm" style="width: 220px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <input type="text" name="search" id="searchRankingInput" class="form-control border-start-0" placeholder="Cari Nama Pemain..."
+                            value="<?= esc($search ?? '') ?>" onkeyup="autoSubmitRanking(event)">
+                    </div>
+                </form>
             </div>
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
@@ -65,7 +84,7 @@
                             <tr>
                                 <td colspan="5" class="text-center text-muted py-4">
                                     <i class="bx bx-info-circle fs-4 d-block mb-2"></i>
-                                    Belum ada data poin ranking yang dihitung.
+                                    Belum ada data poin ranking yang dihitung atau filter tidak menghasilkan data.
                                 </td>
                             </tr>
                         <?php else: ?>
@@ -83,11 +102,11 @@
                                     <td class="text-center"><?= esc($detail['level'] ?? '-') ?></td>
                                     <td class="text-center">
                                         <span class="badge bg-primary fs-6 px-3 py-2">
-                                            <?= number_format(esc($playerRank['total_points']), 0, ',', '.') ?>
+                                            <?= esc($playerRank['total_points']) ?>
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?= site_url('admin/players/history/' . $playerRank['player_id']) ?>"
+                                        <a href="<?= site_url('admin/players/matchHistory/' . $playerRank['player_id']) ?>"
                                             class="btn btn-sm btn-outline-info">
                                             <i class="bx bx-history me-1"></i> Histori
                                         </a>
@@ -101,3 +120,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    let searchTimeout;
+
+    function autoSubmitRanking(event) {
+        // Cek jika tombol yang ditekan adalah Enter (keyCode 13)
+        if (event.keyCode === 13) {
+            clearTimeout(searchTimeout); // Pastikan tidak ada timeout yang tertunda
+            document.getElementById('filterRankingForm').submit();
+            return;
+        }
+
+        // Untuk menunda submit saat user masih mengetik
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            document.getElementById('filterRankingForm').submit();
+        }, 800); // Tunda 800ms (0.8 detik) sebelum submit
+    }
+</script>

@@ -88,10 +88,9 @@ class Schedules extends BaseController
                 ],
             ],
             'match_type' => [
-                'rules'  => 'required|in_list[Ganda]',
+                'rules'  => 'required',
                 'errors' => [
                     'required' => 'Jenis pertandingan harus diisi.',
-                    'in_list'  => 'Jenis pertandingan tidak valid.',
                 ],
             ],
             'status' => [
@@ -175,10 +174,9 @@ class Schedules extends BaseController
                 ],
             ],
             'match_type' => [
-                'rules'  => 'required|in_list[Ganda]',
+                'rules'  => 'required',
                 'errors' => [
                     'required' => 'Jenis pertandingan harus diisi.',
-                    'in_list'  => 'Jenis pertandingan tidak valid.',
                 ],
             ],
             'status' => [

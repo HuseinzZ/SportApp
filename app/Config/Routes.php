@@ -14,7 +14,9 @@ $routes->get('leaderboard', 'Home::index');
 $routes->get('leaderboard/(:num)', 'Home::matchHistory/$1');
 $routes->get('gallery', 'Home::gallery');
 $routes->get('about', 'Home::about');
-$routes->get('match', 'Home::match');
+$routes->get('schedule', 'Home::schedule');
+$routes->get('schedule/(:num)', 'Home::match/$1');
+$routes->get('member', 'Home::player');
 
 // Login Page (GET & POST)
 $routes->match(['get', 'post'], 'admin', 'Auth::index');

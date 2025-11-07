@@ -8,6 +8,7 @@ use App\Models\MatchPlayerModel;
 use App\Models\GalleryModel;
 use App\Models\MatchModel;
 use App\Models\SchedulesModel;
+use App\Models\MatchScoreModel;
 
 class Home extends BaseController
 {
@@ -17,6 +18,7 @@ class Home extends BaseController
     protected $galleryModel;
     protected $matchModel;
     protected $schedulesModel;
+    protected $matchScoreModel;
 
     public function __construct()
     {
@@ -26,12 +28,21 @@ class Home extends BaseController
         $this->galleryModel = new GalleryModel();
         $this->matchModel = new MatchModel();
         $this->schedulesModel = new SchedulesModel();
+        $this->matchScoreModel = new MatchScoreModel();
     }
 
     public function index()
     {
-        $ranking = $this->playerRankPointModel->getGlobalRanking();
-        $playerDetails = array_column($this->playersModel->findAll(), null, 'id');
+        $selectedLevel = $this->request->getGet('level');
+        $search = $this->request->getGet('search');
+        $ranking = $this->playerRankPointModel->getGlobalRanking($selectedLevel, $search);
+        $playerIds = array_column($ranking, 'player_id');
+        if (!empty($playerIds)) {
+            $playerDetails = array_column($this->playersModel->whereIn('id', $playerIds)->findAll(), null, 'id');
+        } else {
+            $playerDetails = [];
+        }
+
         $playerStats = [];
 
         foreach ($ranking as $key => $rankItem) {
@@ -56,9 +67,11 @@ class Home extends BaseController
         }
 
         $data = [
-            'title'   => 'Daftar Peringkat',
-            'ranking' => $ranking,
+            'title'         => 'Daftar Peringkat',
+            'ranking'       => $ranking,
             'playerDetails' => $playerDetails,
+            'selectedLevel' => $selectedLevel,
+            'search'        => $search,
         ];
 
         echo view('templates/header', $data);
@@ -116,18 +129,63 @@ class Home extends BaseController
 
     public function gallery()
     {
-        $galleryData = $this->galleryModel->getGallery();
+        $selectedTitle = $this->request->getGet('title');
+        $galleryModel = $this->galleryModel;
 
         $data = [
-            'title'   => 'Galeri Kegiatan',
-            'gallery' => $galleryData,
+            'title' => 'Galeri Kegiatan',
+            'selectedTitle' => $selectedTitle,
         ];
 
-        echo view('templates/header', $data);
-        echo view('templates/public_sidebar');
-        echo view('templates/public_topbar');
-        echo view('public_site/gallery', $data);
-        echo view('templates/footer');
+        if ($selectedTitle) {
+            // --- MODE DETAIL ALBUM (Title Ditetapkan) ---
+
+            // Ambil SEMUA foto yang cocok dengan title
+            $photos = $galleryModel->where('title', $selectedTitle)->findAll();
+
+            if (empty($photos)) {
+                session()->setFlashdata('error', 'Album atau foto tidak ditemukan.');
+                return redirect()->to(site_url('gallery'));
+            }
+
+            $data['title'] = 'Album: ' . esc($selectedTitle);
+            $data['photos'] = $photos;
+
+            // Gunakan view yang menampilkan foto tunggal (gallery_detail.php)
+            echo view('templates/header', $data);
+            echo view('templates/public_sidebar');
+            echo view('templates/public_topbar');
+            echo view('public_site/gallery_detail', $data); // <-- Gunakan view terpisah untuk detail
+            echo view('templates/footer');
+        } else {
+            // --- MODE DAFTAR ALBUM (Title Kosong) ---
+
+            $galleryData = $galleryModel->getGallery(); // Mengambil semua foto
+
+            // Mengelompokkan foto berdasarkan 'title' untuk menampilkan daftar folder
+            $groupedGallery = [];
+            foreach ($galleryData as $item) {
+                $title = $item['title'];
+                if (!isset($groupedGallery[$title])) {
+                    $groupedGallery[$title] = [
+                        'title' => $title,
+                        'event_date' => $item['event_date'],
+                        'photos_count' => 0,
+                        'cover_photo' => $item['photo'] // Gunakan foto pertama sebagai cover
+                    ];
+                }
+                $groupedGallery[$title]['photos_count']++;
+            }
+
+            $data['grouped_gallery'] = $groupedGallery;
+
+            // Gunakan view utama (gallery.php) yang menampilkan daftar folder
+            echo view('templates/header', $data);
+            echo view('templates/public_sidebar');
+            echo view('templates/public_topbar');
+            echo view('public_site/gallery', $data);
+            echo view('templates/footer');
+        }
     }
 
     public function about()
@@ -156,7 +214,7 @@ class Home extends BaseController
         echo view('templates/footer');
     }
 
-    public function match()
+    public function schedule()
     {
         $schedules = $this->schedulesModel->getSchedulesWithDetails();
 
@@ -175,6 +233,88 @@ class Home extends BaseController
         echo view('templates/public_sidebar');
         echo view('templates/public_topbar');
         echo view('public_site/schedules', $data);
+        echo view('templates/footer');
+    }
+
+    private function getMatchPlayersData($matchId)
+    {
+        $players = $this->matchPlayerModel->getPlayersByMatch($matchId);
+        $teams = ['A' => [], 'B' => []];
+        foreach ($players as $p) {
+            $teams[$p['team']][] = $p['player_name'];
+        }
+        return $teams;
+    }
+
+    public function match($scheduleId = null)
+    {
+        $schedule = $this->schedulesModel->find($scheduleId);
+
+        if (!$schedule || !$scheduleId) {
+            session()->setFlashdata('error', 'Jadwal pertandingan tidak valid atau tidak ditemukan.');
+            return redirect()->to(site_url('admin/schedules'));
+        }
+
+        $allMatches = $this->matchModel->where('schedule_id', $scheduleId)->findAll();
+
+        $matchesData = [];
+        foreach ($allMatches as $match) {
+            $matchId = $match['id'];
+            $matchesData[] = [
+                'match'         => $match,
+                'match_players' => $this->getMatchPlayersData($matchId),
+                'match_scores'  => $this->matchScoreModel->where('match_id', $matchId)->findAll(),
+            ];
+        }
+
+        $data = [
+            'title'       => 'Daftar Pertandingan & Hasil',
+            'schedule_id' => $scheduleId,
+            'schedule'    => $schedule,
+            'all_matches' => $matchesData,
+            'is_empty'    => empty($allMatches),
+        ];
+
+        echo view('templates/header', $data);
+        echo view('templates/public_sidebar');
+        echo view('templates/public_topbar');
+        echo view('public_site/match', $data);
+        echo view('templates/footer');
+    }
+
+    public function player()
+    {
+        // Ambil filter dari URL
+        $selectedLevel = $this->request->getGet('level');
+        $search = $this->request->getGet('search');
+
+        // Inisialisasi query builder
+        $query = $this->playersModel;
+
+        // Filter berdasarkan level jika dipilih
+        if (!empty($selectedLevel) && in_array($selectedLevel, ['Pratama', 'Utama'])) {
+            $query = $query->where('level', $selectedLevel);
+        }
+
+        // Filter berdasarkan nama pemain jika pencarian diisi
+        if (!empty($search)) {
+            $query = $query->like('player_name', $search);
+        }
+
+        // Ambil data pemain terurut berdasarkan nama
+        $players = $query->orderBy('player_name', 'ASC')->findAll();
+
+        $data = [
+            'title'         => 'Data Pemain',
+            'players'       => $players,
+            'selectedLevel' => $selectedLevel,
+            'search'        => $search, // penting dikirim agar form tetap isiannya
+        ];
+
+        echo view('templates/header', $data);
+        echo view('templates/public_sidebar');
+        echo view('templates/public_topbar');
+        echo view('public_site/players', $data);
         echo view('templates/footer');
     }
 }

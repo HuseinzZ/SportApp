@@ -16,11 +16,11 @@
             <div class="card-body">
                 <div class="app-brand justify-content-center">
                     <a href="<?= site_url('admin/dashboard') ?>" class="app-brand-link gap-2">
-                        <span class="app-brand-text demo text-body fw-bolder">Admin Panel</span>
+                        <span class="app-brand-text demo text-body fw-bolder text-uppercase">Admin</span>
                     </a>
                 </div>
                 <h4 class="mb-2">Selamat datang kembali! 👋</h4>
-                <p class="mb-4">Harap, masuk menggunakan akun anda dan mulai menjelajah</p>
+                <p class="mb-4">Harap, masuk menggunakan akun admin</p>
 
                 <form id="formAuthentication" class="mb-3" action="<?= site_url('admin') ?>" method="POST">
                     <?= csrf_field() ?>

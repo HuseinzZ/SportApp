@@ -9,7 +9,7 @@ class Dashboard extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Dashboard Utama Admin',
+            'title' => 'Halaman Utama',
             // Anda bisa menambahkan data dashboard di sini, contoh:
             // 'total_gor' => $this->gorModel->countAll(),
             // 'recent_bookings' => $this->bookingModel->getRecent(),

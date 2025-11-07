@@ -18,12 +18,41 @@
             </div>
         <?php endif; ?>
 
-        <a href="<?= site_url('admin/players/a_players') ?>" class="btn btn-primary mb-3">
-            <i class="bx bx-plus me-1"></i> Tambah Pemain
-        </a>
+        <div class="mb-3">
+            <a href="<?= site_url('admin/players/a_players') ?>" class="btn btn-primary">
+                <i class="bx bx-plus me-1"></i> Tambah Pemain
+            </a>
+        </div>
 
         <div class="card">
-            <h5 class="card-header">Daftar Pemain</h5>
+            <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="mb-0">Daftar Pemain</h5>
+
+                <form id="filterForm" action="<?= site_url('admin/players') ?>" method="get" class="d-flex flex-wrap align-items-center gap-2">
+                    <!-- Filter Level -->
+                    <div class="input-group input-group-sm" style="width: 180px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bx bx-filter-alt"></i>
+                        </span>
+                        <select name="level" id="levelFilter" class="form-select border-start-0"
+                            onchange="document.getElementById('filterForm').submit()">
+                            <option value="">Semua Level</option>
+                            <option value="Utama" <?= $selectedLevel === 'Utama' ? 'selected' : '' ?>>Utama</option>
+                            <option value="Pratama" <?= $selectedLevel === 'Pratama' ? 'selected' : '' ?>>Pratama</option>
+                        </select>
+                    </div>
+
+                    <!-- Pencarian Nama -->
+                    <div class="input-group input-group-sm" style="width: 220px;">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bx bx-search"></i>
+                        </span>
+                        <input type="text" name="search" class="form-control border-start-0" placeholder="Cari Pemain..."
+                            value="<?= esc($search ?? '') ?>" onchange="document.getElementById('filterForm').submit()">
+                    </div>
+                </form>
+            </div>
+
             <div class="table-responsive text-nowrap">
                 <table class="table table-hover align-middle">
                     <thead>
@@ -50,7 +79,6 @@
                                             <?= esc($player['level']) ?>
                                         </span>
                                     </td>
-
                                     <td><?= $player['gender'] === 'M' ? 'Pria' : 'Wanita' ?></td>
                                     <td>
                                         <span class="badge bg-label-<?= $player['is_active'] ? 'success' : 'danger' ?> me-1">

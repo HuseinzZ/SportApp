@@ -53,10 +53,10 @@ $session = service('session');
                     <div class="card-body">
                         <div class="app-brand justify-content-center">
                             <a href="<?= site_url('admin/dashboard') ?>" class="app-brand-link gap-2">
-                                <span class="app-brand-text demo text-body fw-bolder">Admin Panel</span>
+                                <span class="app-brand-text demo text-body fw-bolder text-uppercase">Admin</span>
                             </a>
                         </div>
-                        <h4 class="mb-2">Ganti Sandi Akun 🔒</h4>
+                        <h4 class="mb-2">Ganti Sandi🔒</h4>
                         <p class="mb-4"><?= esc($alert_message) ?></p>
 
                         <?php if ($session->getFlashdata('error')): ?>

@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="tournament_points_id" class="form-label">Jenis Pertandingan</label>
+                    <label for="tournament_points_id" class="form-label">Level Pertandingan</label>
                     <select name="tournament_points_id" id="tournament_points_id"
                         class="form-select <?= (session('validation') && session('validation')->hasError('tournament_points_id')) ? 'is-invalid' : '' ?>">
                         <option value="">-- Pilih Pertandingan --</option>
@@ -51,8 +51,9 @@
                 <div class="mb-3">
                     <label for="match_date" class="form-label">Tanggal & Waktu Pertandingan</label>
                     <?php
+                    // Ensure the datetime-local format is 'YYYY-MM-DDThh:mm'
                     $current_date = $schedule['match_date'] ? date('Y-m-d\TH:i', strtotime($schedule['match_date'])) : '';
-                    $old_date = old('match_date') ? date('Y-m-d\TH:i', strtotime(old('match_date'))) : $current_date;
+                    $old_date = old('match_date') ?: $current_date; // Use old() directly, it should handle the format if validation fails
                     ?>
                     <input type="datetime-local"
                         name="match_date"
@@ -68,7 +69,11 @@
                     <label for="match_type" class="form-label">Jenis Pertandingan</label>
                     <select name="match_type" id="match_type"
                         class="form-select <?= (session('validation') && session('validation')->hasError('match_type')) ? 'is-invalid' : '' ?>">
-                        <option value="Ganda" <?= old('match_type', $schedule['match_type']) === 'Ganda' ? 'selected' : '' ?>>Ganda</option>
+                        <option value="">-- Pilih Jenis Pertandingan --</option>
+                        <option value="Campuran" <?= old('match_type', $schedule['match_type'] ?? '') === 'Campuran' ? 'selected' : '' ?>>Campuran</option>
+                        <option value="Pratama" <?= old('match_type', $schedule['match_type'] ?? '') === 'Pratama' ? 'selected' : '' ?>>Pratama</option>
+                        <option value="Utama" <?= old('match_type', $schedule['match_type'] ?? '') === 'Utama' ? 'selected' : '' ?>>Utama</option>
+                        <option value="Grup" <?= old('match_type', $schedule['match_type'] ?? '') === 'Grup' ? 'selected' : '' ?>>Grup</option>
                     </select>
                     <div class="invalid-feedback">
                         <?= session('validation') ? session('validation')->getError('match_type') : '' ?>

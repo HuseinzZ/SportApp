@@ -2,7 +2,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
 
         <h4 class="fw-bold d-flex align-items-center py-2 mb-2">
-            <i class="bx bx-trophy text-warning fs-3 me-2"></i> Histori Pertandingan <span class="text-primary ms-2"><?= esc($player['player_name']) ?></span>
+            Histori Pertandingan <span class="text-primary ms-2"><?= esc($player['player_name']) ?></span>
         </h4>
 
         <a href="<?= site_url('admin/ranking') ?>" class="btn btn-primary mb-4 d-inline-flex align-items-center">
@@ -11,7 +11,7 @@
 
         <div class="card">
             <div class="card-header border-bottom d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">📜 Riwayat 10 Pertandingan Terakhir (Ganda)</h5>
+                <h5 class="mb-0">Riwayat 10 Pertandingan Terakhir (Ganda)</h5>
             </div>
 
             <div class="table-responsive text-nowrap">

@@ -143,9 +143,9 @@ class Matches extends BaseController
         }
 
         $data = [
-            'title'       => 'Input Pertandingan Baru (Ganda)',
+            'title'       => 'Input Pertandingan Baru',
             'schedule_id' => $scheduleId,
-            'players'     => $this->playersModel->findAll(),
+            'players'     => $this->playersModel->orderBy('player_name', 'ASC')->findAll(),
             'validation'  => \Config\Services::validation(),
             'rounds'      => ['R1', 'R2', 'QF', 'SF', 'Final'],
         ];
@@ -260,7 +260,7 @@ class Matches extends BaseController
         $matchPlayersData = $this->matchPlayerModel->getPlayersByMatch($matchId);
 
         $matchScoresData = $this->matchScoreModel->where('match_id', $matchId)->findAll();
-        $allPlayers = $this->playersModel->findAll();
+        $allPlayers = $this->playersModel->orderBy('player_name', 'ASC')->findAll();
 
         // Mengatur ulang data pemain agar mudah diakses di view
         $playersA = array_filter($matchPlayersData, fn($p) => $p['team'] === 'A');

@@ -18,9 +18,31 @@ class Players extends BaseController
     // ==============================
     public function index()
     {
+        // Ambil filter dari URL
+        $selectedLevel = $this->request->getGet('level');
+        $search = $this->request->getGet('search');
+
+        // Inisialisasi query builder
+        $query = $this->playersModel;
+
+        // Filter berdasarkan level jika dipilih
+        if (!empty($selectedLevel) && in_array($selectedLevel, ['Pratama', 'Utama'])) {
+            $query = $query->where('level', $selectedLevel);
+        }
+
+        // Filter berdasarkan nama pemain jika pencarian diisi
+        if (!empty($search)) {
+            $query = $query->like('player_name', $search);
+        }
+
+        // Ambil data pemain terurut berdasarkan nama
+        $players = $query->orderBy('player_name', 'ASC')->findAll();
+
         $data = [
-            'title'   => 'Master Data Pemain',
-            'players' => $this->playersModel->orderBy('player_name', 'ASC')->findAll(),
+            'title'         => 'Master Data Pemain',
+            'players'       => $players,
+            'selectedLevel' => $selectedLevel,
+            'search'        => $search, // penting dikirim agar form tetap isiannya
         ];
 
         echo view('templates/table_header', $data);

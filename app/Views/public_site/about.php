@@ -111,7 +111,7 @@
                                     </li>
                                     <li>
                                         <i class="bx bxs-circle text-success me-2" style="font-size: 0.6rem;"></i>
-                                        <strong>Poin Awal:</strong> Semua pemain memulai dari 1000 poin (level Perak)
+                                        <strong>Poin Awal:</strong> Semua pemain memulai dari awal
                                     </li>
                                 </ul>
                             </div>

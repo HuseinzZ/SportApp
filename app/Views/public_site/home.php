@@ -1,30 +1,46 @@
+<style>
+    /* 🎨 CSS Kustom untuk Responsivitas Ketinggian Carousel */
+
+    /* Class untuk mengontrol ketinggian gambar carousel */
+    .carousel-img-responsive {
+        /* object-fit: cover; sudah ada di inline style, tetapi pastikan di sini juga */
+        width: 100%;
+        /* Ketinggian default untuk layar yang lebih besar (desktop: >= 992px) */
+        height: 500px;
+    }
+
+    /* Media Query untuk layar ukuran sedang (tablet: <= 991.98px) */
+    @media (max-width: 991.98px) {
+        .carousel-img-responsive {
+            height: 350px;
+            /* Ketinggian disesuaikan untuk tablet */
+        }
+    }
+
+    /* Media Query untuk layar ukuran kecil (ponsel: <= 575.98px) */
+    @media (max-width: 575.98px) {
+        .carousel-img-responsive {
+            height: 220px;
+            /* Ketinggian disesuaikan untuk ponsel */
+        }
+    }
+</style>
+
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-lg-12 mb-4 order-0">
-                <div class="card bg-dark text-white p-0 overflow-hidden" style="max-height: 500px;">
+                <div class="card bg-dark text-white p-0 overflow-hidden">
                     <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" style="cursor: pointer;">
                         <div class="carousel-inner" onclick="nextSlide()">
                             <div class="carousel-item active">
-                                <img src="<?= base_url('assets/img/foto1.jpg') ?>" class="d-block w-100" alt="Latihan Bulutangkis" style="object-fit: cover; height: 500px;">
-                                <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0, 0, 0, 0.5);">
-                                    <h3 class="text-white">Semangat Latihan!</h3>
-                                    <p>Tingkatkan kemampuan Anda bersama PB PRABU.</p>
-                                </div>
+                                <img src="<?= base_url('assets/img/home/1.jpg') ?>" class="d-block w-100 carousel-img-responsive" alt="Latihan Bulutangkis" style="object-fit: cover;">
                             </div>
                             <div class="carousel-item">
-                                <img src="<?= base_url('assets/img/foto2.jpg') ?>" class="d-block w-100" alt="Pertandingan Bulutangkis" style="object-fit: cover; height: 500px;">
-                                <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0, 0, 0, 0.5);">
-                                    <h3 class="text-white">Aksi di Lapangan</h3>
-                                    <p>Saksikan momen-momen terbaik di setiap pertandingan.</p>
-                                </div>
+                                <img src="<?= base_url('assets/img/home/2.jpeg') ?>" class="d-block w-100 carousel-img-responsive" alt="Pertandingan Bulutangkis" style="object-fit: cover;">
                             </div>
                             <div class="carousel-item">
-                                <img src="<?= base_url('assets/img/foto3.jpg') ?>" class="d-block w-100" alt="Grup Atlet PB PRABU" style="object-fit: cover; height: 500px;">
-                                <div class="carousel-caption d-none d-md-block" style="background-color: rgba(0, 0, 0, 0.5);">
-                                    <h3 class="text-white">Komunitas Juara</h3>
-                                    <p>Bergabung dan raih prestasi bersama tim kami.</p>
-                                </div>
+                                <img src="<?= base_url('assets/img/home/3.jpg') ?>" class="d-block w-100 carousel-img-responsive" alt="Grup Atlet PB PRABU" style="object-fit: cover;">
                             </div>
                         </div>
 
@@ -45,6 +61,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-12">
                 <div class="card p-4 mb-4">
                     <div class="card-body">
@@ -56,10 +73,11 @@
                             Bergabunglah dengan komunitas kami dan mulailah perjalanan Anda menuju puncak prestasi di dunia bulutangkis. Dari latihan dasar hingga strategi pertandingan tingkat lanjut, kami menyediakan program terbaik untuk semua level.
                         </p>
                         <a href="<?= base_url('about') ?>" class="btn btn-outline-primary mt-3">Pelajari Lebih Lanjut</a>
-                        <a href="<?= base_url('leaderboard') ?>" class="btn btn-primary mt-3 ms-2">Lihat Peringkat Atlet</a>
+                        <a href="<?= base_url('leaderboard') ?>" class="btn btn-primary mt-2 mt-sm-3 ms-sm-2">Lihat Peringkat Atlet</a>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">

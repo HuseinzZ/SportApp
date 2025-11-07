@@ -53,7 +53,7 @@
                                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="<?= site_url('admin/matches/e_match/' . $match['id']) ?>">
-                                                    <i class="bx bx-edit-alt me-1"></i> Edit Hasil
+                                                    <i class="bx bx-edit-alt me-1"></i> Edit
                                                 </a>
                                                 <a class="dropdown-item text-danger" href="<?= site_url('admin/matches/d_match/' . $match['id']) ?>"
                                                     onclick="return confirm('Hapus Pertandingan #<?= esc($match['id']) ?> beserta semua data pemain dan skor?');">

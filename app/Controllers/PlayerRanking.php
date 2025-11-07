@@ -18,13 +18,29 @@ class PlayerRanking extends BaseController
 
     public function index()
     {
-        $ranking = $this->playerRankPointModel->getGlobalRanking();
-        $playerDetails = array_column($this->playersModel->findAll(), null, 'id');
+        // === 1. Ambil Filter dari URL ===
+        $selectedLevel = $this->request->getGet('level');
+        $search = $this->request->getGet('search');
+
+        // === 2. Panggil Model dengan Filter ===
+        // Asumsi PlayerRankPointModel memiliki method yang bisa menerima filter
+        $ranking = $this->playerRankPointModel->getGlobalRanking($selectedLevel, $search);
+
+        // Ambil detail pemain yang terfilter saja (opsional, untuk efisiensi)
+        $playerIds = array_column($ranking, 'player_id');
+        if (!empty($playerIds)) {
+            $playerDetails = array_column($this->playersModel->whereIn('id', $playerIds)->findAll(), null, 'id');
+        } else {
+            $playerDetails = [];
+        }
 
         $data = [
-            'title'   => 'Daftar Peringkat',
-            'ranking' => $ranking,
+            'title'         => 'Daftar Peringkat',
+            'ranking'       => $ranking,
             'playerDetails' => $playerDetails,
+            // === 3. Kirim Filter ke View ===
+            'selectedLevel' => $selectedLevel,
+            'search'        => $search,
         ];
 
         echo view('templates/table_header', $data);
